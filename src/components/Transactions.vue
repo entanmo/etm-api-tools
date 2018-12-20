@@ -1,40 +1,64 @@
 <template>
   <div class="transactions">
-    <div class="tr-title"> 交易页面：
-      <a-button @click="add(0)">转账</a-button>
-      <a-button @click="add(1)">注册代理</a-button>
-      <a-button @click="add(2)">锁仓</a-button>
-      <a-button @click="add(3)">解锁仓</a-button>
-      <a-button @click="add(4)">投票</a-button>
-      <a-button @click="add(5)">取消投票</a-button>
+    <div class="tr-title">交易页面：
+      <a-button size="small" @click="add(0)">转账</a-button>
+      <a-button size="small" @click="add(1)">注册代理</a-button>
+      <a-button size="small" @click="add(2)">锁仓</a-button>
+      <a-button size="small" @click="add(3)">解锁仓</a-button>
+      <a-button size="small" @click="add(4)">投票</a-button>
+      <a-button size="small" @click="add(5)">取消投票</a-button>
+      <a-button size="small" @click="add(6)">冻结</a-button>
     </div>
-    <div class="tr-content">
-      <a-tabs v-model="activeKey"
-              type="editable-card"
-              hideAdd
-              @edit="onEdit">
-        <a-tab-pane v-for="pane in panes"
-                    :tab="pane.title"
-                    :key="pane.key"
-                    :closable="pane.closable">
-          {{pane.content}}
-        </a-tab-pane>
+    <div v-show="panes.length > 0" class="tr-content">
+      <a-tabs v-model="activeKey" type="editable-card" hideAdd @edit="onEdit">
+        <a-tab-pane
+          v-for="pane in panes"
+          :tab="pane.title"
+          :key="pane.key"
+          :closable="pane.closable"
+        >{{pane.content}}</a-tab-pane>
       </a-tabs>
-      <Transfer />
     </div>
+    <Transfer/>
+    <!-- <Delegate/> -->
+    <Lock/>
+    <Unlock/>
+    <Vote/>
+    <Unvote/>
+    <Freeze/>
   </div>
 </template>
 
 <script>
 import Transfer from "./transactions/Transfer.vue";
+import Delegate from "./transactions/Delegate.vue";
+import Lock from "./transactions/Lock.vue";
+import Unlock from "./transactions/Unlock.vue";
+import Vote from "./transactions/Vote.vue";
+import Unvote from "./transactions/Unvote.vue";
+import Freeze from "./transactions/Freeze.vue";
 
 export default {
   name: "Transactions",
   components: {
-    Transfer
+    Transfer,
+    Delegate,
+    Lock,
+    Unlock,
+    Vote,
+    Unvote,
+    Freeze
   },
   data() {
-    const titles = ["转账", "注册代理", "锁仓", "解锁仓", "投票", "取消投票"];
+    const titles = [
+      "转账",
+      "注册代理",
+      "锁仓",
+      "解锁仓",
+      "投票",
+      "取消投票",
+      "冻结"
+    ];
     return {
       activeKey: null,
       panes: [],
@@ -84,12 +108,10 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
-<style scoped>
+<style lang="less" scoped>
 .transactions {
-  margin: 10px;
-}
-.tr-title {
-  padding-bottom: 10px;
+  .tr-title {
+    padding-bottom: 10px;
+  }
 }
 </style>

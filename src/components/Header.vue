@@ -1,6 +1,6 @@
 <template>
   <div class="header">
-    En-Tan-Mo 集成工具
+    <h1>En-Tan-Mo 集成工具</h1>
   </div>
 </template>
 
