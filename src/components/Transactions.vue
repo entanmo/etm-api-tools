@@ -1,31 +1,27 @@
 <template>
   <div class="transactions">
     <div class="tr-title">交易页面：
-      <a-button size="small" @click="add(0)">转账</a-button>
-      <a-button size="small" @click="add(1)">注册代理</a-button>
-      <a-button size="small" @click="add(2)">锁仓</a-button>
-      <a-button size="small" @click="add(3)">解锁仓</a-button>
-      <a-button size="small" @click="add(4)">投票</a-button>
-      <a-button size="small" @click="add(5)">取消投票</a-button>
-      <a-button size="small" @click="add(6)">冻结</a-button>
     </div>
-    <div v-show="panes.length > 0" class="tr-content">
-      <a-tabs v-model="activeKey" type="editable-card" hideAdd @edit="onEdit">
-        <a-tab-pane
-          v-for="pane in panes"
-          :tab="pane.title"
-          :key="pane.key"
-          :closable="pane.closable"
-        >{{pane.content}}</a-tab-pane>
+    <div v-show="panes.length > 0"
+         class="tr-content">
+      <a-tabs v-model="activeKey"
+              type="editable-card"
+              hideAdd
+              @edit="onEdit">
+        <a-tab-pane v-for="pane in panes"
+                    :tab="pane.title"
+                    :key="pane.key"
+                    :closable="pane.closable">
+          <Transfer v-if="pane.title === titles[0]"></Transfer>
+          <Delegate v-if="pane.title === titles[1]"></Delegate>
+          <Lock v-if="pane.title === titles[2]"></Lock>
+          <Vote v-if="pane.title === titles[3]"></Vote>
+          <Freeze v-if="pane.title === titles[4]"></Freeze>
+          <Second v-if="pane.title === titles[5]"></Second>
+          <Multi v-if="pane.title === titles[6]"></Multi>
+        </a-tab-pane>
       </a-tabs>
     </div>
-    <Transfer/>
-    <!-- <Delegate/> -->
-    <Lock/>
-    <Unlock/>
-    <Vote/>
-    <Unvote/>
-    <Freeze/>
   </div>
 </template>
 
@@ -33,10 +29,10 @@
 import Transfer from "./transactions/Transfer.vue";
 import Delegate from "./transactions/Delegate.vue";
 import Lock from "./transactions/Lock.vue";
-import Unlock from "./transactions/Unlock.vue";
 import Vote from "./transactions/Vote.vue";
-import Unvote from "./transactions/Unvote.vue";
 import Freeze from "./transactions/Freeze.vue";
+import Second from "./transactions/Second.vue";
+import Multi from "./transactions/Multi.vue";
 
 export default {
   name: "Transactions",
@@ -44,20 +40,20 @@ export default {
     Transfer,
     Delegate,
     Lock,
-    Unlock,
     Vote,
-    Unvote,
-    Freeze
+    Freeze,
+    Second,
+    Multi
   },
   data() {
     const titles = [
       "转账",
-      "注册代理",
+      "代理",
       "锁仓",
-      "解锁仓",
       "投票",
-      "取消投票",
-      "冻结"
+      "冻结",
+      "二级密码",
+      "多重签名"
     ];
     return {
       activeKey: null,
@@ -65,6 +61,28 @@ export default {
       newTabIndex: 0,
       titles
     };
+  },
+  props: {
+    choose: Object
+  },
+  watch: {
+    choose: {
+      handler() {
+        let items = this.choose.items;
+        let key = this.choose.key;
+        let num = 0;
+        for (let i = 0; i < items.length; i++) {
+          if (items[i].key === key) {
+            num = i;
+            break;
+          }
+        }
+
+        this.add(num);
+      },
+      // immediate: true,
+      deep: true
+    }
   },
   methods: {
     onEdit(targetKey, action) {
@@ -83,7 +101,6 @@ export default {
       if (!has) {
         this.panes.push({
           title: title,
-          content: this.panes.length,
           key: activeKey
         });
       }

@@ -1,12 +1,12 @@
 <template>
-  <div class="tr-delegate">
+  <div class="tr-second">
     
   </div>
 </template>
 
 <script>
 export default {
-  name: "Delegate",
+  name: "Second",
   data() {
     return {
       
