@@ -2,40 +2,34 @@
   <div class="tr-transfer">
     <div class="tr-transfer-sender">
       <div class="sender-title">发送者：</div>
-      <a-input class="sender-input"
-               placeholder="请输入发送者secret"
-               v-model="secret" />
-      <a-button class="sender-button"
-                type="primary"
-                @click="fransfer">转账</a-button>
+      <a-input class="sender-input" placeholder="请输入发送者secret" v-model="secret"/>
+      <a-button class="sender-button" type="primary" @click="fransfer">转账</a-button>
     </div>
     <div class="tr-transfer-center">
       <div class="tr-transfer-recipient">
         <div class="recipient-title">接收者列表：</div>
-        <a-textarea class="recipient-input"
-                    placeholder="请输入接受者地址 (批量转账输入地址数组)"
-                    :rows="4"
-                    v-model="address" />
+        <a-textarea
+          class="recipient-input"
+          placeholder="请输入接受者地址 (批量转账输入地址数组)"
+          :rows="4"
+          v-model="address"
+        />
       </div>
       <div class="tr-transfer-amount">
         <div class="amount-title">金额列表：</div>
-        <a-textarea class="amount-input"
-                    placeholder="请输入转账金额 (保持与接受者地址形式一致)"
-                    :rows="4"
-                    v-model="amonts" />
+        <a-textarea
+          class="amount-input"
+          placeholder="请输入转账金额 (保持与接受者地址形式一致)"
+          :rows="4"
+          v-model="amonts"
+        />
       </div>
     </div>
     <div class="tr-transfer-message">
       <div class="message-title">返回信息：</div>
-      <a-textarea class="message-input"
-                  placeholder
-                  :rows="8"
-                  v-model="message" />
+      <a-textarea class="message-input" placeholder :rows="8" v-model="message"/>
     </div>
-    <a-alert v-show="alertError"
-             type="error"
-             message="alertError"
-             banner />
+    <a-alert v-show="alertError" type="error" message="alertError" banner/>
   </div>
 </template>
 
@@ -76,11 +70,18 @@ export default {
       let secret = this.secret;
       let address = JSON.parse(this.address);
       let amonts = JSON.parse(this.amonts);
+
+      let isArrayAddress = Array.isArray(address);
+      let isArrayAmounts = Array.isArray(amonts);
       if (
-        !Array.isArray(address) ||
-        !Array.isArray(amonts) ||
-        address.length !== amonts.length
+        isArrayAddress &&
+        isArrayAmounts &&
+        address.length === amonts.length
       ) {
+      } else if (!isArrayAddress && !isArrayAmounts) {
+        address = [address];
+        amonts = [amonts];
+      } else {
         this.$message.info("接受者或者金额格式不对！");
         return;
       }
