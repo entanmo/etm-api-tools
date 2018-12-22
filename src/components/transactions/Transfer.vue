@@ -2,39 +2,38 @@
   <div class="tr-transfer">
     <div class="tr-transfer-sender">
       <div class="sender-title">发送者：</div>
-      <a-input class="sender-input" placeholder="请输入发送者secret" v-model="secret"/>
-      <a-button class="sender-button" type="primary" @click="fransfer">转账</a-button>
+      <a-input class="sender-input"
+               placeholder="请输入发送者secret"
+               v-model="secret" />
+      <a-button class="sender-button"
+                type="primary"
+                @click="fransfer">转账</a-button>
     </div>
     <div class="tr-transfer-center">
       <div class="tr-transfer-recipient">
         <div class="recipient-title">接收者列表：</div>
-        <a-textarea
-          class="recipient-input"
-          placeholder="请输入接受者地址 (批量转账输入地址数组)"
-          :rows="4"
-          v-model="address"
-        />
+        <a-textarea class="recipient-input"
+                    placeholder="请输入接受者地址 (批量转账地址用【英文】逗号分隔)"
+                    :rows="4"
+                    v-model="address" />
       </div>
       <div class="tr-transfer-amount">
         <div class="amount-title">金额列表：</div>
-        <a-textarea
-          class="amount-input"
-          placeholder="请输入转账金额 (保持与接受者地址形式一致)"
-          :rows="4"
-          v-model="amonts"
-        />
+        <a-textarea class="amount-input"
+                    placeholder="请输入转账金额 (保持与接受者地址形式和数量一致)"
+                    :rows="4"
+                    v-model="amounts" />
       </div>
     </div>
     <div class="tr-transfer-message">
-      <div class="message-title">返回信息：</div>
-      <a-textarea class="message-input" placeholder :rows="8" v-model="message"/>
+      <returnmsg :message="message" />
     </div>
-    <a-alert v-show="alertError" type="error" message="alertError" banner/>
   </div>
 </template>
 
 <script>
-// import Application from "../../scripts/src/application.js";
+import returnmsg from "../0_public/ReturnMsg.vue";
+
 import Transaction from "./js/transaction.js";
 
 export default {
@@ -43,76 +42,48 @@ export default {
     return {
       secret: "",
       address: "",
-      amonts: "",
+      amounts: "",
       message: "",
       alertError: ""
     };
   },
+  components: {
+    returnmsg
+  },
   methods: {
     fransfer() {
-      // let that = this;
-      // this.$ajax
-      //   .get("/api/blocks/getHeight")
-      //   .then(res => {
-      //     // console.log(res);
-      //     this.message = JSON.stringify(res.data);
-      //   })
-      //   .catch(res => {
-      //     this.amonts = JSON.stringify(res);
-      //     // console.log(res);
-      //   });
-
-      if (!this.secret || !this.address || !this.amonts) {
-        this.$message.info("请输入完整转账信息！");
+      if (!this.secret || !this.address || !this.amounts) {
+        this.$message.error("请输入完整转账信息！");
         return;
       }
 
       let secret = this.secret;
-      let address = JSON.parse(this.address);
-      let amonts = JSON.parse(this.amonts);
+      let address = this.address.replace("，",",").split(",");
+      let amounts = this.amounts.replace("，",",").split(",");
 
-      let isArrayAddress = Array.isArray(address);
-      let isArrayAmounts = Array.isArray(amonts);
-      if (
-        isArrayAddress &&
-        isArrayAmounts &&
-        address.length === amonts.length
-      ) {
-      } else if (!isArrayAddress && !isArrayAmounts) {
-        address = [address];
-        amonts = [amonts];
-      } else {
-        this.$message.info("接受者或者金额格式不对！");
+      if (address.length !== amounts.length) {
+        this.$message.error("接受者与金额格式不匹配！");
         return;
       }
 
       let tr = new Transaction();
-      tr.transfer({ secret, address, amonts })
-        .then(res => {
-          this.message += JSON.stringify(res);
-        })
-        .then(res => {
-          this.message += JSON.stringify(res);
-        });
+      for (let i = 0; i < address.length; i++) {
+        let data = {
+          secret: secret,
+          recipientId: address[i],
+          amount: amounts[i] * 100000000
+        };
 
-      // let app = new Application();
-      // app
-      //   .batchTransfer(
-      //     [{
-      //       sender: "race forget pause shoe trick first abuse insane hope budget river enough",
-      //       recipient: "A9UgMsDcVLswLYoFfEhMKyfxaD6DS1KsCj",
-      //       amount: 123
-      //     }]
-      //   )
-      //   .then(res => {
-      //     void res;
-      //     //console.log("Finish");
-      //     this.message += JSON.stringify(res);
-      //   })
-      //   .then(err => {
-      //     //console.log(err);
-      //     this.message += JSON.stringify(err);
-      //   });
+        tr.transfer(data)
+          .then(res => {
+            this.message += JSON.stringify(res);
+          })
+          .then(err => {
+            if (err) {
+              this.message += JSON.stringify(err);
+            }
+          });
+      }
     }
   }
 };

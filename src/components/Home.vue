@@ -105,7 +105,7 @@ export default {
   // max-width: 1080px;
   overflow: auto;
   top: 4rem;
-  bottom: 4rem;
+  bottom: 3rem;
   position: absolute;
   z-index: 10;
   display: flex;

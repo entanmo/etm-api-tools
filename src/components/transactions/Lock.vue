@@ -10,7 +10,7 @@
       <div class="amount-title">锁定金额：</div>
       <a-input class="amount-input"
                placeholder="请输入锁定金额"
-               v-model="amonts" />
+               v-model="lockamount" />
       <a-button class="amount-button"
                 type="primary"
                 @click="lock">锁定</a-button>
@@ -18,7 +18,7 @@
     <div class="tr-lock-unlocks">
       <div class="unlocks-title">解锁列表：</div>
       <a-textarea class="unlocks-input"
-                  placeholder="请输入解锁仓交易id (解锁多个时输入数组)"
+                  placeholder="请输入解锁仓交易id (解锁多个时用【英文】逗号分隔)"
                   :rows="4"
                   v-model="unlocks" />
       <a-button class="unlocks-button"
@@ -26,29 +26,80 @@
                 @click="unlock">解锁</a-button>
     </div>
     <div class="tr-lock-message">
-      <div class="message-title">返回信息：</div>
-      <a-textarea class="message-input"
-                  placeholder
-                  :rows="8"
-                  v-model="message" />
+      <returnmsg :message="message" />
     </div>
   </div>
 </template>
 
 <script>
+import returnmsg from "../0_public/ReturnMsg.vue";
+
+import Transaction from "./js/transaction.js";
+
 export default {
   name: "Lock",
   data() {
     return {
       secret: "",
-      amonts: "",
+      lockamount: "",
       unlocks: "",
       message: ""
     };
   },
+  components: {
+    returnmsg
+  },
   methods: {
-    lock() {},
-    unlock() {}
+    lock() {
+      if (!this.secret || !this.lockamount) {
+        this.$message.error("请输入完整锁仓信息！");
+        return;
+      }
+
+      let secret = this.secret;
+      let lockamount = (parseInt(this.lockamount)  * 100000000).toString();
+      
+      let tr = new Transaction();
+      let data = {
+        secret,
+        args:[lockamount]
+      }
+      tr.lock(data)
+        .then(res => {
+          this.message += JSON.stringify(res);
+        })
+        .then(err => {
+          if (err) {
+            this.message += JSON.stringify(err);
+          }
+        });
+    },
+    unlock() {
+      if (!this.secret || !this.unlocks) {
+        this.$message.error("请输入完整解锁仓信息！");
+        return;
+      }
+
+      let secret = this.secret;
+      let unlocks = this.unlocks.replace("，",",").split(",");
+
+      let tr = new Transaction();
+      for (let i = 0; i < unlocks.length; i++) {
+        let data = {
+          secret,
+          unlock: unlocks[i]
+        };
+        tr.unlock(data)
+          .then(res => {
+            this.message += JSON.stringify(res);
+          })
+          .then(err => {
+            if (err) {
+              this.message += JSON.stringify(err);
+            }
+          });
+      }
+    }
   }
 };
 </script>

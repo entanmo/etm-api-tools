@@ -1,30 +1,46 @@
-const Transfer = require("./tr_transfer");
-
+import Server from "./server";
 
 class Transaction {
   constructor() {
-    this.Transfer = new Transfer();
+    this.server = new Server();
   }
 
   async transfer(data) {
-    try {
-      for (let i = 0; i < data.address.length; i++) {
-        await tr.transfer(data.secret, data.address[i], data.amonts[i]);
-      }
-    } catch (e) {
+    // race forget pause shoe trick first abuse insane hope budget river enough
+    return await this.server.put("/api/transactions", data);
+  }
 
-    }
+  async delegate(data) {
+    return await this.server.put("/api/delegates", data);
+  }
 
-    // this.$ajax
-    //   .get("/api/blocks/getHeight")
-    //   .then(res => {
-    //     // console.log(res);
-    //     this.message = JSON.stringify(res.data);
-    //   })
-    //   .catch(res => {
-    //     this.amonts = JSON.stringify(res);
-    //     // console.log(res);
-    //   });
+  async undelegate(data) {
+    return await this.server.put("/api/delegates/undelegate", data);
+  }
+
+  async lock(data) {
+    return await this.server.put("/api/lockvote", data);
+  }
+
+  async unlock(data) {
+    return await this.server.put("/api/lockvote/remove", data);
+  }
+
+  async vote(data) {
+    return await this.server.put("/api/accounts/delegates", data);
+  }
+
+  async freeze(data) {
+    return await this.server.put("/api/transactions/undelegate", data);
+  }
+
+  async second(data) {
+    return await this.server.put("/api/transactions/undelegate", data);
+  }
+
+
+  async multi(data) {
+    return await this.server.put("/api/transactions/undelegate", data);
   }
 
 }

@@ -1,6 +1,6 @@
 <template>
   <div class="footer">
-
+    ©2018 En-Tan-Mo. All Rights Reserved.
   </div>
 </template>
 
@@ -10,11 +10,10 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 .footer {
-  height: 4rem;
-  line-height: 4rem;
+  height: 3rem;
+  line-height: 3rem;
   background:gray;
   width: 100%;
   position: absolute;

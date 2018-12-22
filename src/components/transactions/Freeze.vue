@@ -13,7 +13,7 @@
       <div class="tr-freeze-recipient">
         <div class="recipient-title">接收者列表：</div>
         <a-textarea class="recipient-input"
-                    placeholder="请输入接受者地址 (批量转账输入地址数组)"
+                    placeholder="请输入接受者地址 (批量转账地址用【英文】逗号分隔)"
                     :rows="4"
                     v-model="address" />
       </div>
@@ -22,7 +22,7 @@
         <a-textarea class="amount-input"
                     placeholder="请输入冻结金额 (保持与接受者地址形式一致)"
                     :rows="4"
-                    v-model="amonts" />
+                    v-model="amounts" />
       </div>
       <div class="tr-freeze-time">
         <div class="time-title">时间列表：</div>
@@ -33,29 +33,69 @@
       </div>
     </div>
     <div class="tr-freeze-message">
-      <div class="message-title">返回信息：</div>
-      <a-textarea class="message-input"
-                  placeholder
-                  :rows="8"
-                  v-model="message" />
+      <returnmsg :message="message" />
     </div>
   </div>
 </template>
 
 <script>
+import returnmsg from "../0_public/ReturnMsg.vue";
+
+import Transaction from "./js/transaction.js";
+
 export default {
   name: "Freeze",
   data() {
     return {
       secret: "",
       address: "",
-      amonts: "",
+      amounts: "",
       times: "",
       message: ""
     };
   },
+  components: {
+    returnmsg
+  },
   methods: {
-    freeze() {}
+    freeze() {
+      if (!this.secret || !this.address || !this.amounts || !this.times) {
+        this.$message.error("请输入完整冻结信息！");
+        return;
+      }
+
+      let secret = this.secret;
+      let address = this.address.replace("，",",").split(",");
+      let amounts = this.amounts.replace("，",",").split(",");
+      let times = this.times.replace("，",",").split(",");
+      if (
+        address.length !== amounts.length ||
+        address.length !== times.length
+      ) {
+        this.$message.error("接受者与金额或者锁定时间格式不匹配！");
+        return;
+      }
+
+      let tr = new Transaction();
+      for (let i = 0; i < address.length; i++) {
+        let data = {
+          secret: secret,
+          recipientId: address[i],
+          amount: amounts[i] * 100000000,
+          time: times[i]
+        };
+
+        tr.freeze(data)
+          .then(res => {
+            this.message += JSON.stringify(res);
+          })
+          .then(err => {
+            if (err) {
+              this.message += JSON.stringify(err);
+            }
+          });
+      }
+    }
   }
 };
 </script>
@@ -80,21 +120,21 @@ export default {
       float: right;
     }
   }
+  .tr-freeze-center {
+    display: flex;
+    justify-content: space-between;
 
-  .tr-freeze-recipient {
-    width: 49%;
-    float: left;
-  }
+    .tr-freeze-recipient {
+      width: 45%;
+    }
 
-  .tr-freeze-amount {
-    width: 24%;
-    float: left;
-    padding-left: 3%;
-  }
+    .tr-freeze-amount {
+      width: 25%;
+    }
 
-  .tr-freeze-time {
-    width: 24%;
-    float: right;
+    .tr-freeze-time {
+      width: 25%;
+    }
   }
 
   .tr-freeze-message {
