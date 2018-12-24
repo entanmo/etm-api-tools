@@ -13,7 +13,7 @@
       <div class="tr-transfer-recipient">
         <div class="recipient-title">接收者列表：</div>
         <a-textarea class="recipient-input"
-                    placeholder="请输入接受者地址 (批量转账地址用【英文】逗号分隔)"
+                    placeholder="请输入接受者地址 (批量转账地址用逗号分隔)"
                     :rows="4"
                     v-model="address" />
       </div>
@@ -34,7 +34,8 @@
 <script>
 import returnmsg from "../0_public/ReturnMsg.vue";
 
-import Transaction from "./js/transaction.js";
+import Transaction from "../../scripts/transactions/transaction.js";
+import utils from "../../scripts/utils/utils.js";
 
 export default {
   name: "Transfer",
@@ -57,9 +58,9 @@ export default {
         return;
       }
 
-      let secret = this.secret;
-      let address = this.address.replace("，",",").split(",");
-      let amounts = this.amounts.replace("，",",").split(",");
+      let secret = utils.processString(this.secret);
+      let address = utils.processString(this.address);//.replace("，",",").split(",");
+      let amounts = utils.processString(this.amounts);//.replace("，",",").split(",");
 
       if (address.length !== amounts.length) {
         this.$message.error("接受者与金额格式不匹配！");

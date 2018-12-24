@@ -18,7 +18,7 @@
     <div class="tr-lock-unlocks">
       <div class="unlocks-title">解锁列表：</div>
       <a-textarea class="unlocks-input"
-                  placeholder="请输入解锁仓交易id (解锁多个时用【英文】逗号分隔)"
+                  placeholder="请输入解锁仓交易id (解锁多个时用逗号分隔)"
                   :rows="4"
                   v-model="unlocks" />
       <a-button class="unlocks-button"
@@ -34,7 +34,7 @@
 <script>
 import returnmsg from "../0_public/ReturnMsg.vue";
 
-import Transaction from "./js/transaction.js";
+import Transaction from "../../scripts/transactions/transaction.js";
 
 export default {
   name: "Lock",

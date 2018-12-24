@@ -28,7 +28,7 @@
 <script>
 import returnmsg from "../0_public/ReturnMsg.vue";
 
-import Transaction from "./js/transaction.js";
+import Transaction from "../../scripts/transactions/transaction.js";
 
 export default {
   name: "Delegate",

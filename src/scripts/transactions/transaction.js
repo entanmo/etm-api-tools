@@ -1,4 +1,4 @@
-import Server from "./server";
+import Server from "../server";
 
 class Transaction {
   constructor() {
@@ -6,7 +6,6 @@ class Transaction {
   }
 
   async transfer(data) {
-    // race forget pause shoe trick first abuse insane hope budget river enough
     return await this.server.put("/api/transactions", data);
   }
 
