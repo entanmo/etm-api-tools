@@ -33,12 +33,6 @@
                     @click="unlock">解锁</a-button>
         </div>
       </div>
-
-      <!-- <a-textarea class="unlocks-input"
-                  placeholder="请输入解锁仓交易id (解锁多个时用逗号分隔)"
-                  :rows="4"
-                  v-model="unlocks" /> -->
-
     </div>
     <div class="tr-lock-message">
       <returnmsg :message="message" />
@@ -88,7 +82,7 @@ export default {
 
       data,
       columns,
-      selectedRowKeys: [], // Check here to configure the default column
+      selectedRowKeys: [],
       loading: false
     };
   },

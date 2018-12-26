@@ -1,11 +1,11 @@
 <template>
   <div class="pub-return-msg">
-    <div class="message-title">返回信息：</div>
+    <!-- <div class="message-title">返回信息：</div>
     <a-textarea class="message-input"
                 disabled
                 placeholder
                 :rows="8"
-                v-model="message" />
+                v-model="message" /> -->
   </div>
 </template>
 
