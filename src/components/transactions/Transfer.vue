@@ -35,7 +35,7 @@
 import returnmsg from "../0_public/ReturnMsg.vue";
 
 import Transaction from "../../scripts/transactions/transaction.js";
-import utils from "../../scripts/utils/utils.js";
+import Utils from "../../scripts/utils/utils.js";
 
 export default {
   name: "Transfer",
@@ -58,9 +58,9 @@ export default {
         return;
       }
 
-      let secret = utils.processString(this.secret);
-      let address = utils.processString(this.address);//.replace("，",",").split(",");
-      let amounts = utils.processString(this.amounts);//.replace("，",",").split(",");
+      let secret = Utils.processString(this.secret);
+      let address = Utils.processArray(this.address);
+      let amounts = Utils.processArray(this.amounts);
 
       if (address.length !== amounts.length) {
         this.$message.error("接受者与金额格式不匹配！");
@@ -72,16 +72,16 @@ export default {
         let data = {
           secret: secret,
           recipientId: address[i],
-          amount: amounts[i] * 100000000
+          amount: Utils.processMoney(amounts[i])
         };
 
         tr.transfer(data)
           .then(res => {
-            this.message += JSON.stringify(res);
+            this.message += "转账操作：" + JSON.stringify(res, null, 2) + "\r\n";
           })
           .then(err => {
             if (err) {
-              this.message += JSON.stringify(err);
+              this.message += "转账异常：" + JSON.stringify(err, null, 2) + "\r\n";
             }
           });
       }

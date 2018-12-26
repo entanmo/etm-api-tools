@@ -30,16 +30,20 @@ class Transaction {
   }
 
   async freeze(data) {
-    return await this.server.put("/api/transactions/undelegate", data);
+    return await this.server.put("/api/transactions/delay", data);
   }
 
   async second(data) {
-    return await this.server.put("/api/transactions/undelegate", data);
+    return await this.server.put("/api/transactions/second", data);
+  }
+
+  async multi(data) {
+    return await this.server.put("/api/transactions/multi", data);
   }
 
 
-  async multi(data) {
-    return await this.server.put("/api/transactions/undelegate", data);
+  async getlocks(data){
+    return await this.server.get("/api/lockvote/all", data);
   }
 
 }

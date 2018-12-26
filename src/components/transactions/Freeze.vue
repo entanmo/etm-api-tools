@@ -42,6 +42,7 @@
 import returnmsg from "../0_public/ReturnMsg.vue";
 
 import Transaction from "../../scripts/transactions/transaction.js";
+import Utils from "../../scripts/utils/utils.js";
 
 export default {
   name: "Freeze",
@@ -64,10 +65,10 @@ export default {
         return;
       }
 
-      let secret = this.secret;
-      let address = this.address.replace("，",",").split(",");
-      let amounts = this.amounts.replace("，",",").split(",");
-      let times = this.times.replace("，",",").split(",");
+      let secret = Utils.processString(this.secret);
+      let address = Utils.processArray(this.address);
+      let amounts = Utils.processArray(this.amounts);
+      let times = Utils.processArray(this.times);
       if (
         address.length !== amounts.length ||
         address.length !== times.length
@@ -81,17 +82,17 @@ export default {
         let data = {
           secret: secret,
           recipientId: address[i],
-          amount: amounts[i] * 100000000,
-          time: times[i]
+          amount: Utils.processMoney(amounts[i]),
+          args: [times[i]]
         };
 
         tr.freeze(data)
           .then(res => {
-            this.message += JSON.stringify(res);
+            this.message += "冻结操作：" + JSON.stringify(res, null, 2) + "\r\n";
           })
           .then(err => {
             if (err) {
-              this.message += JSON.stringify(err);
+              this.message += "冻结异常：" + JSON.stringify(err, null, 2) + "\r\n";
             }
           });
       }

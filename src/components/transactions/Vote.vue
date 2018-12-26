@@ -30,6 +30,7 @@
 import returnmsg from "../0_public/ReturnMsg.vue";
 
 import Transaction from "../../scripts/transactions/transaction.js";
+import Utils from "../../scripts/utils/utils.js";
 
 export default {
   name: "Vote",
@@ -50,16 +51,16 @@ export default {
         return;
       }
 
-      let secret = this.secret;
-      let recipient = "-" + this.recipient;
+      let secret = Utils.processString(this.secret);
+      let recipient = "-" + Utils.processString(this.recipient);
       let tr = new Transaction();
       tr.vote({ secret, recipient })
         .then(res => {
-          this.message += JSON.stringify(res);
+          this.message += "投票操作：" + JSON.stringify(res, null, 2) + "\r\n";
         })
         .then(err => {
           if (err) {
-            this.message += JSON.stringify(err);
+            this.message += "投票异常：" + JSON.stringify(err, null, 2) + "\r\n";
           }
         });
     },
@@ -69,16 +70,16 @@ export default {
         return;
       }
 
-      let secret = this.secret;
-      let recipient = "-" + this.recipient;
+      let secret = Utils.processString(this.secret);
+      let recipient = "-" + Utils.processString(this.recipient);
       let tr = new Transaction();
       tr.vote({ secret, recipient })
         .then(res => {
-          this.message += JSON.stringify(res);
+          this.message += "取消投票操作：" + JSON.stringify(res, null, 2) + "\r\n";
         })
         .then(err => {
           if (err) {
-            this.message += JSON.stringify(err);
+            this.message += "取消投票异常：" + JSON.stringify(err, null, 2) + "\r\n";
           }
         });
     }

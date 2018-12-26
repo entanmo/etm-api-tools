@@ -1,7 +1,8 @@
 import Axios from 'axios'
 
 let $ajax = Axios.create({
-  baseURL: 'http://47.107.148.76:4096',
+  // baseURL: 'http://47.107.148.76:4096',
+  baseURL: 'http://localhost:4096',
   timeout: '3000',
   headers: {
     'X-Custom-Header': 'foobar'
@@ -13,10 +14,12 @@ class Server {
 
   }
 
-  async get(uri) {
+  async get(uri, data) {
     return new Promise((resolve, reject) => {
       $ajax
-        .get(uri)
+        .get(uri, {
+          params: data
+        })
         .then(res => {
           return resolve(res.data);
         })

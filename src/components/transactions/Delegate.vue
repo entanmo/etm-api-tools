@@ -14,7 +14,6 @@
                   @click="delegate">注册</a-button>
         <a-button class="sender-button-right"
                   type="primary"
-                  disabled
                   @click="undelegate">注消</a-button>
       </div>
 
@@ -29,6 +28,7 @@
 import returnmsg from "../0_public/ReturnMsg.vue";
 
 import Transaction from "../../scripts/transactions/transaction.js";
+import Utils from "../../scripts/utils/utils.js";
 
 export default {
   name: "Delegate",
@@ -49,16 +49,16 @@ export default {
         return;
       }
 
-      let secret = this.secret;
-      let username = this.username;
+      let secret = Utils.processString(this.secret);
+      let username = Utils.processString(this.username);
       let tr = new Transaction();
       tr.delegate({ secret, username })
         .then(res => {
-          this.message += JSON.stringify(res);
+          this.message += "注册代理人操作：" + JSON.stringify(res, null, 2) + "\r\n";
         })
         .then(err => {
           if (err) {
-            this.message += JSON.stringify(err);
+            this.message += "注册代理人异常：" + JSON.stringify(err, null, 2) + "\r\n";
           }
         });
     },
@@ -68,15 +68,15 @@ export default {
         return;
       }
 
-      let secret = this.secret;
+      let secret = Utils.processString(this.secret);
       let tr = new Transaction();
       tr.undelegate({ secret })
         .then(res => {
-          this.message += JSON.stringify(res);
+          this.message += "注销代理人操作：" + JSON.stringify(res, null, 2) + "\r\n";
         })
         .then(err => {
           if (err) {
-            this.message += JSON.stringify(err);
+            this.message += "注销代理人异常：" + JSON.stringify(err, null, 2) + "\r\n";
           }
         });
     }
