@@ -17,8 +17,7 @@
     "lodash": "^4.17.11",
     "request": "^2.88.0",
     "sodium-native": "^2.2.3",
-    "vue": "^2.5.17",
-    "vue-split-layout": "0.0.12"
+    "vue": "^2.5.17"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "^3.2.0",
@@ -27,6 +26,8 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
+    "splitpanes": "^1.8.0",
+    "vue-split-layout": "0.0.12",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {

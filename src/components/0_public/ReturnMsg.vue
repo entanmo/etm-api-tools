@@ -12,9 +12,9 @@
 <script>
 export default {
   name: "ReturnMsg",
-  props:{
-    message:String
-  }
+  // props:{
+  //   message:String
+  // }
 };
 </script>
 
