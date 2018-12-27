@@ -65,7 +65,7 @@ export default {
     onEdit(targetKey, action) {
       this[action](targetKey);
     },
-    add(num) {console.log(num)
+    add(num) {
       let activeKey = `newTab${num}`;
       let title = this.titles[num];
       let has = false;

@@ -1,24 +1,30 @@
 import Axios from 'axios'
 import config from '../assets/config'
 
-let $ajax = Axios.create({
-  // baseURL: 'http://47.107.148.76:4096',
-  // baseURL: 'http://localhost:4096',
-  baseURL: 'http://' + config.ip + ':' + config.port,
-  timeout: '3000',
-  headers: {
-    'X-Custom-Header': 'foobar'
-  }
-})
+// let $ajax = Axios.create({
+//   // baseURL: 'http://47.107.148.76:4096',
+//   // baseURL: 'http://localhost:4096',
+//   baseURL: 'http://' + config.ip + ':' + config.port,
+//   timeout: '3000',
+//   headers: {
+//     'X-Custom-Header': 'foobar'
+//   }
+// })
 
 class Server {
   constructor() {
-
+    this.$ajax = Axios.create({
+      baseURL: 'http://' + config.ip + ':' + config.port,
+      timeout: '3000',
+      headers: {
+        'X-Custom-Header': 'foobar'
+      }
+    })
   }
 
   async get(uri, data) {
     return new Promise((resolve, reject) => {
-      $ajax
+      this.$ajax
         .get(uri, {
           params: data
         })
@@ -33,7 +39,7 @@ class Server {
 
   async post(uri, data) {
     return new Promise((resolve, reject) => {
-      $ajax
+      this.$ajax
         .post(uri, data)
         .then(res => {
           return resolve(res.data);
@@ -46,7 +52,7 @@ class Server {
 
   async put(uri, data) {
     return new Promise((resolve, reject) => {
-      $ajax
+      this.$ajax
         .put(uri, data)
         .then(res => {
           return resolve(res.data);
