@@ -20,30 +20,24 @@
                   @click="unvote">取消投票</a-button>
       </div>
     </div>
-    <div class="tr-vote-message">
-      <returnmsg :message="message" />
-    </div>
   </div>
 </template>
 
 <script>
-import returnmsg from "../0_public/ReturnMsg.vue";
-
 import Transaction from "../../scripts/transactions/transaction.js";
 import Utils from "../../scripts/utils/utils.js";
+
+import eventBus from "../../eventBus.js";
 
 export default {
   name: "Vote",
   data() {
     return {
       secret: "",
-      recipient: "",
-      message: ""
+      recipient: ""
     };
   },
-  components: {
-    returnmsg
-  },
+  components: {},
   methods: {
     vote() {
       if (!this.secret || !this.recipient) {
@@ -56,11 +50,13 @@ export default {
       let tr = new Transaction();
       tr.vote({ secret, recipient })
         .then(res => {
-          this.message += "投票操作：" + JSON.stringify(res, null, 2) + "\r\n";
+          let message = "投票操作：" + JSON.stringify(res, null, 2);
+          eventBus.$emit("returnMsg", message);
         })
         .then(err => {
           if (err) {
-            this.message += "投票异常：" + JSON.stringify(err, null, 2) + "\r\n";
+            let message = "投票异常：" + JSON.stringify(err, null, 2);
+            eventBus.$emit("returnMsg", message);
           }
         });
     },
@@ -75,11 +71,13 @@ export default {
       let tr = new Transaction();
       tr.vote({ secret, recipient })
         .then(res => {
-          this.message += "取消投票操作：" + JSON.stringify(res, null, 2) + "\r\n";
+          let message = "取消投票操作：" + JSON.stringify(res, null, 2);
+          eventBus.$emit("returnMsg", message);
         })
         .then(err => {
           if (err) {
-            this.message += "取消投票异常：" + JSON.stringify(err, null, 2) + "\r\n";
+            let message = "取消投票异常：" + JSON.stringify(err, null, 2);
+            eventBus.$emit("returnMsg", message);
           }
         });
     }
@@ -109,10 +107,6 @@ export default {
     .recipient-button-right {
       width: @btnWidth;
     }
-  }
-
-  .tr-vote-message {
-    padding-top: 20px;
   }
 }
 </style>

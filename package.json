@@ -12,6 +12,8 @@
     "async": "^2.6.1",
     "axios": "^0.18.0",
     "bitcore-mnemonic": "^1.7.0",
+    "crypto": "^1.0.1",
+    "etm-js": "git+https://github.com/entanmo/etm-js.git",
     "less": "^3.9.0",
     "less-loader": "^4.1.0",
     "lodash": "^4.17.11",
@@ -26,8 +28,7 @@
     "babel-eslint": "^10.0.1",
     "eslint": "^5.8.0",
     "eslint-plugin-vue": "^5.0.0-0",
-    "splitpanes": "^1.8.0",
-    "vue-split-layout": "0.0.12",
+    "vue-split-panel": "^1.0.4",
     "vue-template-compiler": "^2.5.17"
   },
   "eslintConfig": {

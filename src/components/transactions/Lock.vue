@@ -34,17 +34,14 @@
         </div>
       </div>
     </div>
-    <div class="tr-lock-message">
-      <returnmsg :message="message" />
-    </div>
   </div>
 </template>
 
 <script>
-import returnmsg from "../0_public/ReturnMsg.vue";
-
 import Transaction from "../../scripts/transactions/transaction.js";
 import Utils from "../../scripts/utils/utils.js";
+
+import eventBus from "../../eventBus.js";
 
 const columns = [
   {
@@ -62,14 +59,6 @@ const columns = [
 ];
 
 const data = [];
-// for (let i = 0; i < 46; i++) {
-//   data.push({
-//     key: i,
-//     time: `Edward King ${i}`,
-//     amout: 32,
-//     id: `London, Park Lane no. ${i}`
-//   });
-// }
 
 export default {
   name: "Lock",
@@ -77,32 +66,28 @@ export default {
     return {
       secret: "",
       lockamount: "",
-      // unlocks: "",
-      message: "",
 
       data,
       columns,
       selectedRowKeys: [],
-      loading: false
+      // loading: false
     };
   },
-  components: {
-    returnmsg
-  },
+  components: {},
   computed: {
     hasSelected() {
       return this.selectedRowKeys.length > 0;
     }
   },
   methods: {
-    start() {
-      this.loading = true;
-      // ajax request after empty completing
-      setTimeout(() => {
-        this.loading = false;
-        this.selectedRowKeys = [];
-      }, 1000);
-    },
+    // start() {
+    //   this.loading = true;
+    //   // ajax request after empty completing
+    //   setTimeout(() => {
+    //     this.loading = false;
+    //     this.selectedRowKeys = [];
+    //   }, 1000);
+    // },
     onSelectChange(selectedRowKeys) {
       console.log("selectedRowKeys changed: ", selectedRowKeys);
       this.selectedRowKeys = selectedRowKeys;
@@ -124,12 +109,13 @@ export default {
 
       tr.lock(data)
         .then(res => {
-          this.message += "锁仓操作：" + JSON.stringify(res, null, 2) + "\r\n";
+          let message = "锁仓操作：" + JSON.stringify(res, null, 2);
+          eventBus.$emit("returnMsg", message);
         })
         .then(err => {
           if (err) {
-            this.message +=
-              "锁仓异常：" + JSON.stringify(err, null, 2) + "\r\n";
+            let message = "锁仓异常：" + JSON.stringify(err, null, 2);
+            eventBus.$emit("returnMsg", message);
           }
         });
     },
@@ -145,40 +131,40 @@ export default {
         let index = this.selectedRowKeys[i];
         unlocks.push(this.data[index].id);
       }
-      // let unlocks = Utils.processArray(this.unlocks);
 
       let tr = new Transaction();
       let data = {
         secret,
         args: unlocks
       };
+      
       tr.unlock(data)
         .then(res => {
-          this.message +=
-            "解锁仓操作：" + JSON.stringify(res, null, 2) + "\r\n";
+          let message = "解锁仓操作：" + JSON.stringify(res, null, 2);
+          eventBus.$emit("returnMsg", message);
         })
         .then(err => {
           if (err) {
-            this.message +=
-              "解锁仓异常：" + JSON.stringify(err, null, 2) + "\r\n";
+            let message = "解锁仓异常：" + JSON.stringify(err, null, 2);
+            eventBus.$emit("returnMsg", message);
           }
         });
     },
     getlocks() {
-      // if (!this.secret) {
-      //   this.$message.error("请输入完整获取锁仓列表信息！");
-      //   return;
-      // }
+      if (!this.secret) {
+        this.$message.error("请输入完整获取锁仓列表信息！");
+        return;
+      }
 
-      // let secret = Utils.processString(this.secret);
-      // let address = getAddress(secret);
-      let address = "AF3K8Ed5gJ4ZXRpfNH2wCBKejCXtiWQfgr";
+      let secret = Utils.processString(this.secret);
+      let address = Utils.getAddressBySecret(secret);
+      // let address = "AF3K8Ed5gJ4ZXRpfNH2wCBKejCXtiWQfgr";
 
       let tr = new Transaction();
-      tr.getlocks({ address })
+      tr.getlocks({ address ,state:1})
         .then(res => {
-          this.message +=
-            "刷新锁仓列表操作：" + JSON.stringify(res, null, 2) + "\r\n";
+          let message = "刷新锁仓列表操作：" + JSON.stringify(res, null, 2);
+          eventBus.$emit("returnMsg", message);
           if (res.success) {
             let trs = res.trs;
             this.data = [];
@@ -194,8 +180,8 @@ export default {
         })
         .then(err => {
           if (err) {
-            this.message +=
-              "刷新锁仓列表异常：" + JSON.stringify(err, null, 2) + "\r\n";
+            let message = "刷新锁仓列表异常：" + JSON.stringify(err, null, 2);
+            eventBus.$emit("returnMsg", message);
           }
         });
     }
@@ -263,10 +249,6 @@ export default {
         }
       }
     }
-  }
-
-  .tr-lock-message {
-    padding: 20px 0;
   }
 }
 </style>

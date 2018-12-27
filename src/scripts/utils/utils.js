@@ -1,3 +1,5 @@
+import etmjs from 'etm-js'
+
 let Utils = {
 
   processString(str) {
@@ -21,16 +23,25 @@ let Utils = {
 
   // new Date(Date.UTC(2018, 9, 12, 12, 0, 0, 0));
   convertTimeToLocal(timestamp) {
-    let startTime = new Date(Date.UTC(2018, 9, 12, 12, 0, 0, 0));
-    let newTime = startTime.getTime() + timestamp * 1000;
-    let time = new Date(newTime);
-    let timeStr = time.toLocaleDateString().replace(/\//g, "-") + " " + time.toTimeString().substr(0, 8);
-    return timeStr;
+    return new Date(etmjs.transaction.getTime(timestamp)).toLocaleDateString();
   },
 
   convertTimeToUTC(time) {
     return time;
   },
+
+  getAddressBySecret(secret){"secret",console.log(secret)
+    let publicKey = etmjs.crypto.getKeys(secret).publicKey;console.log("publicKey",publicKey.toString())
+    let address = etmjs.crypto.getAddress(publicKey);console.log("address",address)
+
+    return address;
+  },
+
+  GetAddress(publicKey) {
+    let address = etmjs.crypto.getNewAddress(publicKey);
+
+    return address;
+}
 
 
 }

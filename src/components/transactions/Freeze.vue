@@ -32,17 +32,14 @@
                     v-model="times" />
       </div>
     </div>
-    <div class="tr-freeze-message">
-      <returnmsg :message="message" />
-    </div>
   </div>
 </template>
 
 <script>
-import returnmsg from "../0_public/ReturnMsg.vue";
-
 import Transaction from "../../scripts/transactions/transaction.js";
 import Utils from "../../scripts/utils/utils.js";
+
+import eventBus from "../../eventBus.js";
 
 export default {
   name: "Freeze",
@@ -51,13 +48,10 @@ export default {
       secret: "",
       address: "",
       amounts: "",
-      times: "",
-      message: ""
+      times: ""
     };
   },
-  components: {
-    returnmsg
-  },
+  components: {},
   methods: {
     freeze() {
       if (!this.secret || !this.address || !this.amounts || !this.times) {
@@ -88,11 +82,13 @@ export default {
 
         tr.freeze(data)
           .then(res => {
-            this.message += "冻结操作：" + JSON.stringify(res, null, 2) + "\r\n";
+            let message = "冻结操作：" + JSON.stringify(res, null, 2);
+            eventBus.$emit("returnMsg", message);
           })
           .then(err => {
             if (err) {
-              this.message += "冻结异常：" + JSON.stringify(err, null, 2) + "\r\n";
+              let message = "冻结异常：" + JSON.stringify(err, null, 2);
+              eventBus.$emit("returnMsg", message);
             }
           });
       }
@@ -136,10 +132,6 @@ export default {
     .tr-freeze-time {
       width: 25%;
     }
-  }
-
-  .tr-freeze-message {
-    padding-top: 20px;
   }
 }
 </style>

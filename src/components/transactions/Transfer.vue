@@ -25,17 +25,14 @@
                     v-model="amounts" />
       </div>
     </div>
-    <div class="tr-transfer-message">
-      <returnmsg :message="message" />
-    </div>
   </div>
 </template>
 
 <script>
-import returnmsg from "../0_public/ReturnMsg.vue";
-
 import Transaction from "../../scripts/transactions/transaction.js";
 import Utils from "../../scripts/utils/utils.js";
+
+import eventBus from "../../eventBus.js";
 
 export default {
   name: "Transfer",
@@ -44,13 +41,10 @@ export default {
       secret: "",
       address: "",
       amounts: "",
-      message: "",
       alertError: ""
     };
   },
-  components: {
-    returnmsg
-  },
+  components: {},
   methods: {
     fransfer() {
       if (!this.secret || !this.address || !this.amounts) {
@@ -77,11 +71,13 @@ export default {
 
         tr.transfer(data)
           .then(res => {
-            this.message += "转账操作：" + JSON.stringify(res, null, 2) + "\r\n";
+            let message = "转账操作：" + JSON.stringify(res, null, 2);
+            eventBus.$emit("returnMsg", message);
           })
           .then(err => {
             if (err) {
-              this.message += "转账异常：" + JSON.stringify(err, null, 2) + "\r\n";
+              let message = "转账异常：" + JSON.stringify(err, null, 2);
+              eventBus.$emit("returnMsg", message);
             }
           });
       }
@@ -119,10 +115,6 @@ export default {
   .tr-transfer-amount {
     width: 49%;
     float: right;
-  }
-
-  .tr-transfer-message {
-    padding-top: 20px;
   }
 }
 </style>

@@ -2,34 +2,66 @@
   <div class="qi-block">
     <div class="qi-block-sender">
       <div class="sender-title">区块：</div>
-      <a-input class="sender-input"
-               placeholder="请输入区块查询条件"
-               v-model="secret" />
+      <a-input-group class="sender-input"
+                     compact>
+        <a-select class="sender-input-type"
+                  defaultValue="height"
+                  @change="handleChange">
+          <a-select-option value="height">height</a-select-option>
+          <a-select-option value="id">id</a-select-option>
+        </a-select>
+        <a-input class="sender-input-value"
+                 defaultValue="请输入区块查询参数"
+                 v-model="value" />
+      </a-input-group>
       <a-button class="sender-button"
                 type="primary"
-                @click="query">查询</a-button>
-    </div>
-    <div class="qi-block-message">
-      <returnmsg :message="message" />
+                @click="queryblock">查询</a-button>
     </div>
   </div>
 </template>
 
 <script>
-import returnmsg from "../0_public/ReturnMsg.vue";
+import QueryInfo from "../../scripts/queryInfo/queryInfo.js";
+import Utils from "../../scripts/utils/utils.js";
+import eventBus from "../../eventBus.js";
 
 export default {
   data() {
     return {
-      secret: "",
-      message: "",
+      value: "",
+      type: "height"
     };
   },
-  components: {
-    returnmsg
-  },
+  components: {},
   methods: {
-    query() {}
+    queryblock() {
+      if (!this.value) {
+        this.$message.error("请输入完整区块查询信息！");
+        return;
+      }
+
+      let value = Utils.processString(this.value);
+
+      let qi = new QueryInfo();
+      let data = {};
+      data[this.type] = value;
+      qi.queryblock(data)
+        .then(res => {
+          let message = "区块查询操作：" + JSON.stringify(res, null, 2);
+          eventBus.$emit("returnMsg", message);
+        })
+        .then(err => {
+          if (err) {
+            let message = "区块查询异常：" + JSON.stringify(err, null, 2);
+            eventBus.$emit("returnMsg", message);
+          }
+        });
+    },
+    handleChange(value) {
+      console.log(`selected ${value}`);
+      this.type = value;
+    }
   }
 };
 </script>
@@ -42,6 +74,15 @@ export default {
 
   .sender-input {
     width: calc(95% - @btnWidth);
+    display: inline-block;
+
+    .sender-input-type {
+      width: @btnWidth;
+    }
+
+    .sender-input-value {
+      width: calc(100% - @btnWidth);
+    }
   }
   .sender-button {
     width: @btnWidth;

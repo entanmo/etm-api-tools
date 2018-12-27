@@ -1,39 +1,38 @@
 <template>
   <div class="home">
     <div class="home-menus">
-      <a-menu
-        mode="inline"
-        :openKeys="openKeys"
-        @openChange="onOpenChange"
-        @select="onSelect"
-        style="width: 256px"
-      >
-        <a-sub-menu v-for="(menu,key) in menus" :key="key">
+      <a-menu mode="inline"
+              :openKeys="openKeys"
+              @openChange="onOpenChange"
+              @select="onSelect"
+              style="width: 256px">
+        <a-sub-menu v-for="(menu,key) in menus"
+                    :key="key">
           <span slot="title">
-            <a-icon :type="menu.icon"/>
+            <a-icon :type="menu.icon" />
             <span>{{menu.name}}</span>
           </span>
-          <a-menu-item v-for="sub in menu.subItems" :key="sub.key">{{sub.name}}</a-menu-item>
+          <a-menu-item v-for="sub in menu.subItems"
+                       :key="sub.key">{{sub.name}}</a-menu-item>
         </a-sub-menu>
       </a-menu>
     </div>
     <div class="home-body">
-      <!-- <Layout class="home-body-layout"
-              :resize="true"
-              :edit="false"
-      :splits="tree">-->
-      <splitpanes class="default-theme" horizontal>
-        <div class="layout-content" splitpanes-default="70">
-          <transactions v-if="openKeys[0] === 'sub1'" :choose1="choose1"/>
-          <queryInfo v-else-if="openKeys[0] === 'sub2'" :choose2="choose2"/>
-          <createFlie v-show="openKeys[0] === 'sub3'" :choose3="choose3"/>
-        </div>
-        <!-- <span splitpanes-default="75"></span> -->
-        <span splitpanes-min="30" splitpanes-default="30"></span>
-      </splitpanes>
-      <!-- <Pane class="layout-pane"
-              title="返回信息："></Pane>
-      </Layout>-->
+      <Split direction="vertical" :gutterSize="10">
+        <SplitArea :size="75">
+          <div class="layout-content">
+            <transactions v-if="openKeys[0] === 'sub1'"
+                          :choose1="choose1" />
+            <queryInfo v-else-if="openKeys[0] === 'sub2'"
+                       :choose2="choose2" />
+            <createFlie v-show="openKeys[0] === 'sub3'"
+                        :choose3="choose3" />
+          </div>
+        </SplitArea>
+        <SplitArea :size="25">
+          <returnmsg/>
+        </SplitArea>
+      </Split>
     </div>
   </div>
 </template>
@@ -44,29 +43,16 @@ import QueryInfo from "./QueryInfo.vue";
 import CreateFlie from "./CreateFlie.vue";
 import returnmsg from "./0_public/ReturnMsg.vue";
 
-import { Layout, Pane } from "vue-split-layout";
-import Splitpanes from "splitpanes";
-import "splitpanes/dist/splitpanes.css";
-
 export default {
   name: "Home",
   components: {
     Transactions,
     QueryInfo,
     CreateFlie,
-    returnmsg,
-    Splitpanes,
-    Layout,
-    Pane
+    returnmsg
   },
   data() {
     return {
-      // tree: {
-      //   dir: "vertical",
-      //   first: 0,
-      //   second: 1,
-      //   split: "70%"
-      // },
       rootSubmenuKeys: ["sub1", "sub2", "sub3"],
       openKeys: ["sub1"],
       menus: {
@@ -117,7 +103,6 @@ export default {
   },
   methods: {
     onOpenChange(openKeys) {
-      console.log("openKeys", openKeys);
       const latestOpenKey = openKeys.find(
         key => this.openKeys.indexOf(key) === -1
       );
@@ -128,7 +113,6 @@ export default {
       }
     },
     onSelect(selectedKeys) {
-      console.log(selectedKeys, this.openKeys[0]);
       if (this.openKeys[0] === "sub1") {
         this.choose1.items = this.menus[this.openKeys[0]].subItems;
         this.choose1.key = selectedKeys.key;
@@ -165,11 +149,6 @@ export default {
     margin: 15px;
     width: calc(100% - 270px);
 
-    .layout-content {
-      height: 100%;
-      overflow: auto;
-      margin: 10px;
-    }
   }
 }
 </style>
