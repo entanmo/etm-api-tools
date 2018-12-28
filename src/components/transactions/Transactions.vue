@@ -1,8 +1,8 @@
 <template>
-  <div class="queryinfo">
-    <div class="qi-title"> 查询页面： </div>
+  <div class="transactions">
+    <div class="tr-title">交易页面：</div>
     <div v-show="panes.length > 0"
-         class="qi-content">
+         class="tr-content">
       <a-tabs v-model="activeKey"
               type="editable-card"
               hideAdd
@@ -11,9 +11,13 @@
                     :tab="pane.title"
                     :key="pane.key"
                     :closable="pane.closable">
-          <Account v-show="pane.title === titles[0]"></Account>
-          <Transaction v-show="pane.title === titles[1]"></Transaction>
-          <Block v-show="pane.title === titles[2]"></Block>
+          <Transfer v-show="pane.title === titles[0]"></Transfer>
+          <Delegate v-show="pane.title === titles[1]"></Delegate>
+          <Lock v-show="pane.title === titles[2]"></Lock>
+          <Vote v-show="pane.title === titles[3]"></Vote>
+          <Freeze v-show="pane.title === titles[4]"></Freeze>
+          <Second v-show="pane.title === titles[5]"></Second>
+          <Multi v-show="pane.title === titles[6]"></Multi>
         </a-tab-pane>
       </a-tabs>
     </div>
@@ -21,33 +25,49 @@
 </template>
 
 <script>
-import Block from "./queryInfo/Block.vue";
-import Account from "./queryInfo/Account.vue";
-import Transaction from "./queryInfo/Transaction.vue";
+import Transfer from "./Transfer.vue";
+import Delegate from "./Delegate.vue";
+import Lock from "./Lock.vue";
+import Vote from "./Vote.vue";
+import Freeze from "./Freeze.vue";
+import Second from "./Second.vue";
+import Multi from "./Multi.vue";
 
 export default {
   components: {
-    Block,
-    Account,
-    Transaction
+    Transfer,
+    Delegate,
+    Lock,
+    Vote,
+    Freeze,
+    Second,
+    Multi
   },
   data() {
-    const titles = ["账户信息", "交易信息", "区块信息"];
+    const titles = [
+      "转账",
+      "代理",
+      "锁仓",
+      "投票",
+      "冻结",
+      "二级密码",
+      "多重签名"
+    ];
     return {
       activeKey: null,
       panes: [],
       newTabIndex: 0,
-      titles,
+      titles
     };
   },
   props: {
-    choose2: Object
+    choose1: Object
   },
   watch: {
-    choose2: {
+    choose1: {
       handler() {
-        let items = this.choose2.items;
-        let key = this.choose2.key;
+        let items = this.choose1.items;
+        let key = this.choose1.key;
         let num = 0;
         for (let i = 0; i < items.length; i++) {
           if (items[i].key === key) {
@@ -58,6 +78,7 @@ export default {
 
         this.add(num);
       },
+      // immediate: true,
       deep: true
     }
   },
@@ -103,7 +124,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.qi-title {
-    padding-bottom: 10px;
-  }
+.tr-title {
+  padding-bottom: 10px;
+}
 </style>

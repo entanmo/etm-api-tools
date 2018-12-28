@@ -35,7 +35,6 @@ import Utils from "../../scripts/utils/utils.js";
 import eventBus from "../../eventBus.js";
 
 export default {
-  name: "Transfer",
   data() {
     return {
       secret: "",

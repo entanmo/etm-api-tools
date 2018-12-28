@@ -6,14 +6,11 @@
 </template>
 
 <script>
-export default {
-  name: 'CreateFlie',
- 
-}
+export default {};
 </script>
 
 <style lang="less" scoped>
 .cf-title {
-    padding-bottom: 10px;
-  }
+  padding-bottom: 10px;
+}
 </style>

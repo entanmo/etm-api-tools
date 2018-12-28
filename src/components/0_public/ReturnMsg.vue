@@ -7,7 +7,8 @@
                 icon="delete"
                 @click="clear"></a-button>
     </div>
-    <div class="message-content" v-show="message !=''">
+    <div class="message-content"
+         v-show="message !=''">
       <pre>{{message}}</pre>
     </div>
   </div>
@@ -47,9 +48,9 @@ export default {
     display: flex;
     justify-content: space-between;
 
-    .message-clear{
+    .message-clear {
       position: fixed;
-      right:40px;
+      right: 40px;
     }
   }
   .message-content {

@@ -61,7 +61,6 @@ const columns = [
 const data = [];
 
 export default {
-  name: "Lock",
   data() {
     return {
       secret: "",
@@ -69,7 +68,7 @@ export default {
 
       data,
       columns,
-      selectedRowKeys: [],
+      selectedRowKeys: []
       // loading: false
     };
   },
@@ -137,7 +136,7 @@ export default {
         secret,
         args: unlocks
       };
-      
+
       tr.unlock(data)
         .then(res => {
           let message = "解锁仓操作：" + JSON.stringify(res, null, 2);
@@ -161,7 +160,7 @@ export default {
       // let address = "AF3K8Ed5gJ4ZXRpfNH2wCBKejCXtiWQfgr";
 
       let tr = new Transaction();
-      tr.getlocks({ address ,state:1})
+      tr.getlocks({ address, state: 1 })
         .then(res => {
           let message = "刷新锁仓列表操作：" + JSON.stringify(res, null, 2);
           eventBus.$emit("returnMsg", message);

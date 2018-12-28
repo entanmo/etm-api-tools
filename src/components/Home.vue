@@ -5,7 +5,7 @@
               :openKeys="openKeys"
               @openChange="onOpenChange"
               @select="onSelect"
-              style="width: 256px">
+              style="width: 200px">
         <a-sub-menu v-for="(menu,key) in menus"
                     :key="key">
           <span slot="title">
@@ -18,19 +18,20 @@
       </a-menu>
     </div>
     <div class="home-body">
-      <Split direction="vertical" :gutterSize="10">
-        <SplitArea :size="75">
+      <Split direction="vertical"
+             :gutterSize="10">
+        <SplitArea :size="60">
           <div class="layout-content">
-            <transactions v-if="openKeys[0] === 'sub1'"
+            <transactions v-show="openKeys[0] === 'sub1'"
                           :choose1="choose1" />
-            <queryInfo v-else-if="openKeys[0] === 'sub2'"
+            <queryInfo v-show="openKeys[0] === 'sub2'"
                        :choose2="choose2" />
             <createFlie v-show="openKeys[0] === 'sub3'"
                         :choose3="choose3" />
           </div>
         </SplitArea>
-        <SplitArea :size="25">
-          <returnmsg/>
+        <SplitArea :size="40">
+          <ReturnMsg />
         </SplitArea>
       </Split>
     </div>
@@ -38,18 +39,17 @@
 </template>
 
 <script>
-import Transactions from "./Transactions.vue";
-import QueryInfo from "./QueryInfo.vue";
-import CreateFlie from "./CreateFlie.vue";
-import returnmsg from "./0_public/ReturnMsg.vue";
+import Transactions from "./transactions/Transactions.vue";
+import QueryInfo from "./queryInfo/QueryInfo.vue";
+import CreateFlie from "./createFile/CreateFlie.vue";
+import ReturnMsg from "./0_public/ReturnMsg.vue";
 
 export default {
-  name: "Home",
   components: {
     Transactions,
     QueryInfo,
     CreateFlie,
-    returnmsg
+    ReturnMsg
   },
   data() {
     return {
@@ -113,6 +113,7 @@ export default {
       }
     },
     onSelect(selectedKeys) {
+      console.log(selectedKeys);
       if (this.openKeys[0] === "sub1") {
         this.choose1.items = this.menus[this.openKeys[0]].subItems;
         this.choose1.key = selectedKeys.key;
@@ -140,15 +141,14 @@ export default {
   position: absolute;
   z-index: 10;
   display: flex;
-  justify-content: flex-end;
+  // justify-content: flex-end;
 
   .home-menu {
-    width: 260px;
+    width: 200px;
   }
   .home-body {
     margin: 15px;
-    width: calc(100% - 270px);
-
+    width: calc(100% - 220px);
   }
 }
 </style>

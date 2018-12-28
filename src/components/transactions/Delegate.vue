@@ -28,7 +28,6 @@ import Utils from "../../scripts/utils/utils.js";
 import eventBus from "../../eventBus.js";
 
 export default {
-  name: "Delegate",
   data() {
     return {
       secret: "",

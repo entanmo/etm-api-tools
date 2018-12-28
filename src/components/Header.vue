@@ -2,18 +2,18 @@
   <div class="header">
     <h1 class="header-title">En-Tan-Mo 集成工具</h1>
     <div class="header-button">
-      <setting/>
+      <setting />
     </div>
   </div>
 </template>
 
 <script>
-import setting from "./Setting.vue";
+import setting from "./0_public/Setting.vue";
 
 export default {
   components: {
     setting
-  },
+  }
 };
 </script>
 

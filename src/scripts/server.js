@@ -1,19 +1,11 @@
 import Axios from 'axios'
-import config from '../assets/config'
-
-// let $ajax = Axios.create({
-//   // baseURL: 'http://47.107.148.76:4096',
-//   // baseURL: 'http://localhost:4096',
-//   baseURL: 'http://' + config.ip + ':' + config.port,
-//   timeout: '3000',
-//   headers: {
-//     'X-Custom-Header': 'foobar'
-//   }
-// })
+import config from '../assets/ipconfig'
 
 class Server {
   constructor() {
     this.$ajax = Axios.create({
+      // baseURL: 'http://47.107.148.76:4096',
+      // baseURL: 'http://localhost:4096',
       baseURL: 'http://' + config.ip + ':' + config.port,
       timeout: '3000',
       headers: {

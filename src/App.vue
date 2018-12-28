@@ -1,28 +1,28 @@
 <template>
   <div id="app">
-    <Header/>
-    <Home/>
-    <Footer/>
+    <Header />
+    <Home />
+    <Footer />
   </div>
 </template>
 
 <script>
-import Header from './components/Header.vue'
-import Footer from './components/Footer.vue'
-import Home from './components/Home.vue'
+import Header from "./components/Header.vue";
+import Footer from "./components/Footer.vue";
+import Home from "./components/Home.vue";
 
 export default {
-  name: 'app',
+  name: "app",
   components: {
     Header,
     Footer,
     Home
   }
-}
+};
 </script>
 
 <style lang="less">
 #app {
-  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  font-family: "Avenir", Helvetica, Arial, sans-serif;
 }
 </style>
