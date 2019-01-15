@@ -1,15 +1,18 @@
-import Vue from 'vue'
-import App from './App.vue'
-import Antd from 'ant-design-vue'
-import 'ant-design-vue/dist/antd.css'
+import Vue from "vue";
+import App from "./App.vue";
+import router from "./router";
+import store from "./store";
+import axios from "axios";
+import Antd from "ant-design-vue";
+import "ant-design-vue/dist/antd.css";
 
-import VueSplit from 'vue-split-panel'
-Vue.use(VueSplit)
+Vue.prototype.$axios = axios;
+Vue.config.productionTip = false;
 
-Vue.config.productionTip = false
-
-Vue.use(Antd)
+Vue.use(Antd);
 
 new Vue({
-  render: h => h(App),
-}).$mount('#app')
+  router,
+  store,
+  render: h => h(App)
+}).$mount("#app");

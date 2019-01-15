@@ -1,4 +1,4 @@
-# etm-tools
+# entanmo tools
 
 ## Project setup
 ```

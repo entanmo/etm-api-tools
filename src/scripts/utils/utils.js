@@ -1,9 +1,8 @@
-import etmjs from 'etm-js'
+import etmjs from "etm-js";
 
 let Utils = {
-
   processString(str) {
-    str = str.replace("\"", "");
+    str = str.replace('"', "");
     return str;
   },
 
@@ -30,9 +29,12 @@ let Utils = {
     return time;
   },
 
-  getAddressBySecret(secret){"secret",console.log(secret)
-    let publicKey = etmjs.crypto.getKeys(secret).publicKey;console.log("publicKey",publicKey.toString())
-    let address = etmjs.crypto.getAddress(publicKey);console.log("address",address)
+  getAddressBySecret(secret) {
+    "secret", console.log(secret);
+    let publicKey = etmjs.crypto.getKeys(secret).publicKey;
+    console.log("publicKey", publicKey.toString());
+    let address = etmjs.crypto.getAddress(publicKey);
+    console.log("address", address);
 
     return address;
   },
@@ -41,9 +43,7 @@ let Utils = {
     let address = etmjs.crypto.getNewAddress(publicKey);
 
     return address;
-}
-
-
-}
+  }
+};
 
 export default Utils;

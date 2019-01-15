@@ -16,7 +16,6 @@ class QueryInfo {
   async querytransaction(data) {
     return await this.server.get("/api/transactions/get", data);
   }
-
 }
 
 export default QueryInfo;

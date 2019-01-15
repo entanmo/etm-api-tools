@@ -41,11 +41,9 @@ class Transaction {
     return await this.server.put("/api/transactions/multi", data);
   }
 
-
-  async getlocks(data){
+  async getlocks(data) {
     return await this.server.get("/api/lockvote/all", data);
   }
-
 }
 
 export default Transaction;

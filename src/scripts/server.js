@@ -1,17 +1,18 @@
-import Axios from 'axios'
-import config from '../assets/ipconfig'
+import Axios from "axios";
+import config from '@/assets/ipconfig'
 
 class Server {
   constructor() {
     this.$ajax = Axios.create({
+      // baseURL: "http://47.110.42.170:4098",
       // baseURL: 'http://47.107.148.76:4096',
       // baseURL: 'http://localhost:4096',
-      baseURL: 'http://' + config.ip + ':' + config.port,
-      timeout: '3000',
+      baseURL: config.type + config.ip,
+      timeout: "3000",
       headers: {
-        'X-Custom-Header': 'foobar'
+        "X-Custom-Header": "foobar"
       }
-    })
+    });
   }
 
   async get(uri, data) {
