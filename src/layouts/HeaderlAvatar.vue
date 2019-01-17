@@ -47,12 +47,18 @@ export default {
     };
   },
   methods: {
-    handleSelect(val){
+    handleSelect(val) {
       this.type = val;
     },
     showModal() {
       this.visible = true;
 
+      let url = localStorage.getItem("url");
+      if (url) {
+        url = JSON.parse(url);
+        config.type = url.type;
+        config.ip = url.ip;
+      }
       this.curtype = config.type;
       this.curip = config.ip;
       this.type = config.type;
@@ -63,6 +69,10 @@ export default {
 
       config.type = this.type;
       config.ip = this.ip;
+      localStorage.setItem(
+        "url",
+        JSON.stringify({ type: config.type, ip: config.ip })
+      );
     }
   }
 };

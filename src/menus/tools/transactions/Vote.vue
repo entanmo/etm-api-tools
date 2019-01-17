@@ -24,8 +24,8 @@
 </template>
 
 <script>
-import Transaction from "../../scripts/transactions/transaction.js";
-import Utils from "../../scripts/utils/utils.js";
+import Transaction from "@/scripts/transactions/transaction.js";
+import Utils from "@/scripts/utils/utils.js";
 
 export default {
   data() {

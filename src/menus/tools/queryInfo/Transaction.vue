@@ -13,8 +13,8 @@
 </template>
 
 <script>
-import QueryInfo from "../../scripts/queryInfo/queryInfo.js";
-import Utils from "../../scripts/utils/utils.js";
+import QueryInfo from "@/scripts/queryInfo/queryInfo.js";
+import Utils from "@/scripts/utils/utils.js";
 
 export default {
   data() {

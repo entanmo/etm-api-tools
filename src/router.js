@@ -45,43 +45,43 @@ export default new Router({
                 {
                   path: "/tools/transactions/transfer",
                   name: "转账交易",
-                  component: () => import("@/menus/transactions/Transfer"),
+                  component: () => import("@/menus/tools/transactions/Transfer"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/delegate",
                   name: "代理交易",
-                  component: () => import("@/menus/transactions/Delegate"),
+                  component: () => import("@/menus/tools/transactions/Delegate"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/lock",
                   name: "锁仓交易",
-                  component: () => import("@/menus/transactions/Lock"),
+                  component: () => import("@/menus/tools/transactions/Lock"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/vote",
                   name: "投票交易",
-                  component: () => import("@/menus/transactions/Vote"),
+                  component: () => import("@/menus/tools/transactions/Vote"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/freeze",
                   name: "冻结交易",
-                  component: () => import("@/menus/transactions/Freeze"),
+                  component: () => import("@/menus/tools/transactions/Freeze"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/second",
                   name: "二级密码交易",
-                  component: () => import("@/menus/transactions/Second"),
+                  component: () => import("@/menus/tools/transactions/Second"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/multi",
                   name: "多重签名交易",
-                  component: () => import("@/menus/transactions/Multi"),
+                  component: () => import("@/menus/tools/transactions/Multi"),
                   icon: "none"
                 }
               ]
@@ -95,19 +95,19 @@ export default new Router({
                 {
                   path: "/tools/queryInfo/basic",
                   name: "账户信息",
-                  component: () => import("@/menus/queryInfo/Account"),
+                  component: () => import("@/menus/tools/queryInfo/Account"),
                   icon: "none"
                 },
                 {
                   path: "/tools/queryInfo/step",
                   name: "交易信息",
-                  component: () => import("@/menus/queryInfo/Transaction"),
+                  component: () => import("@/menus/tools/queryInfo/Transaction"),
                   icon: "none"
                 },
                 {
                   path: "/tools/queryInfo/advanced",
                   name: "区块信息",
-                  component: () => import("@/menus/queryInfo/Block"),
+                  component: () => import("@/menus/tools/queryInfo/Block"),
                   icon: "none"
                 }
               ]
@@ -122,13 +122,13 @@ export default new Router({
                   path: "/tools/createFile/account",
                   name: "生成账号",
                   icon: "none"
-                  // component: () => import('@/menus/createFile/account')
+                  // component: () => import('@/menus/tools/createFile/account')
                 },
                 {
                   path: "/tools/createFile/genesis",
                   name: "生成创世快",
                   icon: "none"
-                  // component: () => import('@/menus/createFile/genesis')
+                  // component: () => import('@/menus/tools/createFile/genesis')
                 }
               ]
             },
