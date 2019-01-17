@@ -51,15 +51,16 @@ export default {
   },
   mounted() {
     this.getHeight();
+    this.changeAvgData();
     this.calcAvgTime();
 
     setInterval(() => {
       this.getHeight();
     }, 3000);
 
-    setInterval(() => {
-      this.changeAvgData();
-    }, 10000);
+    // setInterval(() => {
+    //   this.changeAvgData();
+    // }, 10000);
   },
   methods: {
     onChange() {},
@@ -109,45 +110,22 @@ export default {
         .catch(() => {});
     },
     changeAvgData() {
-      // let server = new Server();
-      // server
-      //   .get("api/blocks", { limit: 10, offset: this.height - 10 })
-      //   .then(res => {
-      //     let blocks = res.blocks;console.log(blocks)
+      let server = new Server();
+      server
+        .get("api/blocks", { limit: 11, orderBy: "height" })
+        .then(res => {
+          let blocks = res.blocks.reverse();
 
-      //     let timeDate = [];
-      //     for (let i = 0; i < blocks.length; i++) {
-      //       timeDate.push({
-      //         height: blocks[i].height.toString(),
-      //         avgTime: blocks[i].timestamp
-      //       });
-      //     }
-      //     this.avgData = timeDate;
-      //   })
-      //   .catch(() => {});
-
-      // let dataNum = 10;
-      // let dataTemp = this.avgData;
-      // let avgTime;
-
-      // if (dataTemp.length === 0) {
-      //   for (let i = 0; i < dataNum; i++) {
-      //     dataTemp.push({
-      //       height: (this.height - (10 - i)).toString(),
-      //       avgTime: 0
-      //     });
-      //   }
-      // }
-      // this.calcAvgTime(1, (err, avg) => {
-      //   if (!err) {
-      //     avgTime = avg.toFixed(2);
-      //     dataTemp.push({
-      //       height: this.height.toString(),
-      //       avgTime: avgTime
-      //     });
-      //     this.avgData = dataTemp.slice(-dataNum);
-      //   }
-      // });
+          let timeDate = [];
+          for (let i = 0; i < blocks.length - 1; i++) {
+            timeDate.push({
+              height: blocks[i + 1].height.toString(),
+              avgTime: blocks[i + 1].timestamp - blocks[i].timestamp
+            });
+          }
+          this.avgData = timeDate;
+        })
+        .catch(() => {});
     }
   }
 };

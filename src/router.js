@@ -12,7 +12,7 @@ export default new Router({
       path: "/",
       name: "En-Tan-Mo",
       component: MenuView,
-      redirect: "/api/accounts/open",
+      redirect: "/workspace/home",
       icon: "none",
       invisible: true,
       children: [

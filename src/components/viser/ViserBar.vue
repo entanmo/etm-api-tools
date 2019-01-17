@@ -1,5 +1,8 @@
 <template>
   <div class="chart-content">
+    <div class="chart-title">
+      <h4>对应高度出块时间：</h4>
+    </div>
     <v-chart :force-fit="true"
              :height="height"
              :data="data"
@@ -35,7 +38,6 @@ export default {
     return {
       scale,
       // data,
-      // pending:[ 20, 30, 20, 30],
       height: 250
     };
   },
@@ -46,4 +48,7 @@ export default {
 </script>
 
 <style scoped>
+.chart-title {
+  padding: 10px;
+}
 </style>
