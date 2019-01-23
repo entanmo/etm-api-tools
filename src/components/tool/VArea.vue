@@ -126,14 +126,13 @@ dv.transform({
 });
 export default {
   data() {
-      return{
-          data:dv,
-          scale
-      }
+    return {
+      data: dv,
+      scale
+    };
   }
 };
 </script>
 
 <style scoped>
-
 </style>

@@ -150,7 +150,7 @@ export default {
 
       let msg = this.$store.state.api[modules][item];
       let server = new Server();
-      console.log(modules, item, uri, msg,this.$store.state.api);
+      console.log(modules, item, uri, msg, this.$store.state.api);
       if (method === "get") {
         server
           .get(uri, msg)

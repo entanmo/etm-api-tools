@@ -1,52 +1,68 @@
 <template>
   <div class="home">
-    <div class="home-show">
+    <div class="head-area">
       <a-card :bordered="false">
         <a-row>
           <a-col :sm="8"
                  :xs="24">
-            <head-info title="最新区块高度"
-                       :content="height"
-                       :bordered="true" />
+            <headinfo title="最新区块高度"
+                      :content="height"
+                      :bordered="true" />
           </a-col>
           <a-col :sm="8"
                  :xs="24">
-            <head-info title="平均出块时间"
-                       :content="avgTime"
-                       :bordered="true" />
+            <headinfo title="平均出块时间"
+                      :content="avgTime"
+                      :bordered="true" />
           </a-col>
           <a-col :sm="8"
                  :xs="24">
-            <head-info title="交易总量"
-                       :content="tps" />
+            <headinfo title="最新块交易量"
+                      :content="trsNumber" />
           </a-col>
         </a-row>
       </a-card>
     </div>
-    <div class="home-avg">
-      <viserbar :data="avgData" />
+    <div class="body-area">
+      <div class="chart-title">
+        <h4>对应高度出块时间：</h4>
+      </div>
+      <viserbar :data="avgData"
+                :height="barHeight"
+                :scale="barScale"
+                :position="barPosition" />
     </div>
   </div>
 </template>
 
 <script>
 import Server from "@/scripts/server.js";
-import HeadInfo from "../../components/tool/HeadInfo";
-import viserbar from "../../components/viser/ViserBar";
+import headinfo from "@/components/tool/HeadInfo";
+import viserbar from "@/components/viser/ViserBar";
+
+const AVG_LEN = 505;
+const BAR_LEN = 20;
 
 export default {
   data() {
     return {
-      range: 505,
       height: 0,
       avgTime: 0,
-      tps: 0,
+      trsNumber: 0,
       avgData: [],
-      prevHeight: 0
+      prevHeight: 0,
+      barHeight: 250,
+      barScale: [
+        {
+          dataKey: "avgTime",
+          tickInterval: 3
+        }
+      ],
+      barPosition: "height*avgTime"
     };
   },
   components: {
-    HeadInfo,
+    headinfo,
     viserbar
   },
   mounted() {
@@ -57,10 +73,6 @@ export default {
     setInterval(() => {
       this.getHeight();
     }, 3000);
-
-    // setInterval(() => {
-    //   this.changeAvgData();
-    // }, 10000);
   },
   methods: {
     onChange() {},
@@ -74,7 +86,7 @@ export default {
           if (this.height !== this.prevHeight) {
             this.prevHeight = this.height;
 
-            this.calcAvgTime(505, (err, avg) => {
+            this.calcAvgTime(AVG_LEN, (err, avg) => {
               if (!err) {
                 this.avgTime = avg.toFixed(2);
               }
@@ -94,6 +106,8 @@ export default {
         .get("api/blocks/get", { height: height1 })
         .then(res => {
           block1 = res.block;
+          this.trsNumber = block1.numberOfTransactions;
+
           server
             .get("api/blocks/get", { height: height2 })
             .then(res => {
@@ -102,7 +116,7 @@ export default {
                 let avg = (block1.timestamp - block2.timestamp) / range;
                 cb(null, avg);
               } else {
-                cb("get height error1");
+                cb("get height error");
               }
             })
             .catch(() => {});
@@ -112,7 +126,7 @@ export default {
     changeAvgData() {
       let server = new Server();
       server
-        .get("api/blocks", { limit: 11, orderBy: "height" })
+        .get("api/blocks", { limit: BAR_LEN + 1, orderBy: "height" })
         .then(res => {
           let blocks = res.blocks.reverse();
 
@@ -133,12 +147,18 @@ export default {
 
 <style lang="less" scoped>
 .home {
-  .home-show {
+  padding-bottom: 20px;
+
+  .head-area {
     padding-bottom: 20px;
   }
-  .home-avg {
+  .body-area {
     height: 250px;
     background-color: #fff;
+
+    .chart-title {
+      padding: 10px;
+    }
   }
 }
 </style>

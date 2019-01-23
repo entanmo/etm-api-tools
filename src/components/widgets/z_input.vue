@@ -36,11 +36,7 @@ const integerType = [
   "totalFee",
   "type"
 ];
-const arrayType = [
-  "args",
-  "delegates",
-  "keysgroup"
-]
+const arrayType = ["args", "delegates", "keysgroup"];
 
 export default {
   data() {
@@ -91,7 +87,7 @@ export default {
             console.error(e.toString());
           }
         }
-        console.log("input:",this.modules,this.item,this.name,val)
+        console.log("input:", this.modules, this.item, this.name, val);
         this.$store.state.api[this.modules][this.item][this.name] = val;
       }
     }

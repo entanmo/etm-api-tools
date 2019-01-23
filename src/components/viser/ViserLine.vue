@@ -6,7 +6,7 @@
              :scale="scale">
       <v-tooltip />
       <v-axis />
-      <v-bar :position="position" />
+      <v-line :position="position" shape="hv"/>
     </v-chart>
   </div>
 </template>

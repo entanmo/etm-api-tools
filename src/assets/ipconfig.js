@@ -1,4 +1,4 @@
 export default {
-  type:"http://",
-  ip:"47.110.42.170:4098"
+  type: "http://",
+  ip: "47.110.42.170:4098"
 };

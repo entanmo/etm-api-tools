@@ -1,21 +1,20 @@
 import Axios from "axios";
-import config from '@/assets/ipconfig'
+import config from "@/assets/ipconfig";
 
 class Server {
   constructor() {
     let url = localStorage.getItem("url");
-    if(!url){
+    if (!url) {
       url = { type: config.type, ip: config.ip };
-    }
-    else{
+    } else {
       url = JSON.parse(url);
     }
     this.$ajax = Axios.create({
-      // baseURL: "http://47.110.42.170:4098",
+      // baseURL: "http://47.110.42.170:4098",39.98.65.187:5000
       // baseURL: 'http://47.107.148.76:4096',
       // baseURL: 'http://localhost:4096',
       baseURL: url.type + url.ip,
-      timeout: "3000",
+      timeout: "6000",
       headers: {
         "X-Custom-Header": "foobar"
       }

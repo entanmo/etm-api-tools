@@ -27,6 +27,40 @@ export default new Router({
               name: "首页",
               component: () => import("@/menus/workspace/home"),
               icon: "home"
+            },
+            {
+              path: "/workspace/analysis",
+              name: "分析页",
+              component: RouteView,
+              icon: "bar-chart",
+              children: [
+                {
+                  path: "/workspace/analysis/tps",
+                  name: "TPS计算",
+                  component: () => import("@/menus/workspace/analysis/tps"),
+                  icon: "none"
+                },
+                {
+                  path: "/workspace/analysis/generateBlock",
+                  name: "出块统计",
+                  component: () =>
+                    import("@/menus/workspace/analysis/generateBlock"),
+                  icon: "none"
+                },
+                {
+                  path: "/workspace/analysis/delegates",
+                  name: "矿工统计",
+                  component: () =>
+                    import("@/menus/workspace/analysis/delegates"),
+                  icon: "none"
+                },
+                {
+                  path: "/workspace/analysis/votes",
+                  name: "票数统计",
+                  component: () => import("@/menus/workspace/analysis/votes"),
+                  icon: "none"
+                }
+              ]
             }
           ]
         },
@@ -45,13 +79,15 @@ export default new Router({
                 {
                   path: "/tools/transactions/transfer",
                   name: "转账交易",
-                  component: () => import("@/menus/tools/transactions/Transfer"),
+                  component: () =>
+                    import("@/menus/tools/transactions/Transfer"),
                   icon: "none"
                 },
                 {
                   path: "/tools/transactions/delegate",
                   name: "代理交易",
-                  component: () => import("@/menus/tools/transactions/Delegate"),
+                  component: () =>
+                    import("@/menus/tools/transactions/Delegate"),
                   icon: "none"
                 },
                 {
@@ -101,7 +137,8 @@ export default new Router({
                 {
                   path: "/tools/queryInfo/step",
                   name: "交易信息",
-                  component: () => import("@/menus/tools/queryInfo/Transaction"),
+                  component: () =>
+                    import("@/menus/tools/queryInfo/Transaction"),
                   icon: "none"
                 },
                 {
@@ -131,7 +168,7 @@ export default new Router({
                   // component: () => import('@/menus/tools/createFile/genesis')
                 }
               ]
-            },
+            }
           ]
         },
         {
