@@ -45,7 +45,8 @@
           </div>
         </div>
         <div class="chart-center">
-          <viserbar :data="data"
+          <viserbar v-show="!disabled"
+                    :data="data"
                     :height="height"
                     :scale="scale"
                     :position="position" />
@@ -69,13 +70,14 @@ export default {
       scale: [
         {
           dataKey: "count",
-          tickInterval: 1
+          tickInterval: 1,
+          min: 0
         }
       ],
       position: "username*count",
       disabled: true,
       totalDelegates: 0,
-      range: "1--505",
+      range: "0--0",
       startHeight: 1,
       len: 505
     };
@@ -89,10 +91,11 @@ export default {
       this.disabled = !checked;
 
       if (checked) {
-        this.getBlocks(this.startHeight, this.len);
+        this.getBlocks(this.startHeight - 1, this.len);
       } else {
         this.data = [];
         this.totalDelegates = 0;
+        this.range = "0--0";
       }
     },
     async getBlocks(startHeight, len) {
@@ -110,6 +113,9 @@ export default {
 
       let generators = {};
       for (let i = 0; i < blocks.length; i++) {
+        if (blocks[i].height === 1) {
+          continue;
+        }
         let generator = blocks[i].generatorPublicKey;
         if (generators[generator]) {
           generators[generator] += 1;
@@ -121,8 +127,12 @@ export default {
       for (let i = 0; i < keys.length; i++) {
         let key = keys[i];
         let res = await server.get("/api/delegates/get", { publicKey: key });
+        let username = "null";
+        if (res.delegate && res.delegate.username) {
+          username = res.delegate.username;
+        }
         this.data.push({
-          username: res.delegate.username,
+          username: username,
           count: generators[key]
         });
       }
@@ -147,6 +157,7 @@ export default {
       background-color: #fff;
 
       .chart-top {
+        height: 50px;
         padding: 10px;
         display: flex;
         justify-content: space-between;

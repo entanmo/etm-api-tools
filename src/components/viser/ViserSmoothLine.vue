@@ -3,11 +3,16 @@
     <v-chart :force-fit="true"
              :height="height"
              :data="data"
-             :scale="scale">
+             :scale="scale"
+             :padding="['auto',50,'auto',50]">
       <v-tooltip />
-      <v-axis />
-      <v-smooth-line :position="position" color="blue" shape="smooth"/>
-      <v-point :position="position" color="green" shape="circle" />
+      <v-axis title />
+      <v-smooth-line :position="position"
+                     color="blue"
+                     shape="smooth" />
+      <v-point :position="position"
+               color="green"
+               shape="circle" />
     </v-chart>
   </div>
 </template>

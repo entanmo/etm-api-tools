@@ -55,7 +55,8 @@ export default {
       barScale: [
         {
           dataKey: "avgTime",
-          tickInterval: 3
+          tickInterval: 3,
+          min: 0
         }
       ],
       barPosition: "height*avgTime"

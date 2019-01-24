@@ -36,40 +36,56 @@
       </a-card>
     </div>
     <div class="body-area">
-      <a-form @submit="handleSubmit"
-              :form="form">
-        <a-form-item label='开始高度'
-                     :labelCol="{ span: 6 }"
-                     :wrapperCol="{ span: 14 }">
-          <a-input v-decorator="[
+      <div class="body-area-left">
+        <a-form @submit="handleSubmit"
+                :form="form">
+          <a-form-item label='开始高度'
+                       :labelCol="{ span: 6 }"
+                       :wrapperCol="{ span: 14 }">
+            <a-input v-decorator="[
           'start',
           {rules: [{ required: true, message: '起始高度必须输入' }]}
         ]"
-                   placeholder='请输入计算TPS的结束高度!' />
-        </a-form-item>
-        <a-form-item label='结束高度'
-                     :labelCol="{ span: 6 }"
-                     :wrapperCol="{ span: 14 }">
-          <a-input v-decorator="[
+                     placeholder='请输入计算TPS的结束高度!' />
+          </a-form-item>
+          <a-form-item label='结束高度'
+                       :labelCol="{ span: 6 }"
+                       :wrapperCol="{ span: 14 }">
+            <a-input v-decorator="[
           'end',
           {rules: [{ required: true, message: '结束高度必须输入' }]}
         ]"
-                   placeholder='请输入计算TPS的结束高度!'>
-          </a-input>
-        </a-form-item>
-        <a-form-item :wrapperCol="{ span: 5, offset: 6 }">
-          <a-button type='primary'
-                    htmlType='submit'>
-            计算
-          </a-button>
-        </a-form-item>
-      </a-form>
+                     placeholder='请输入计算TPS的结束高度!'>
+            </a-input>
+          </a-form-item>
+          <a-form-item :wrapperCol="{ span: 5, offset: 6 }">
+            <a-button type='primary'
+                      htmlType='submit'>
+              计算
+            </a-button>
+          </a-form-item>
+        </a-form>
+      </div>
+      <div class="body-area-right"
+           v-show="data.length>0">
+        <div class="top-title">
+          <h4>包含交易块对应的交易量和耗时：</h4>
+        </div>
+        <div class="chart-center">
+          <viserdouble :data="data"
+                       :height="height"
+                       :scale="scale"
+                       :legendItems="legendItems"
+                       :keys="keys" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script>
 import headinfo from "@/components/tool/HeadInfo";
+import viserdouble from "@/components/viser/ViserDouble";
 import Server from "@/scripts/server.js";
 
 export default {
@@ -81,11 +97,44 @@ export default {
       maxtrs: 0,
       maxgap: 0,
       len: 0,
-      totalTrs: 0
+      totalTrs: 0,
+      data: [],
+      height: 250,
+      scale: [
+        {
+          dataKey: "height",
+          tickInterval: 1
+        },
+        {
+          dataKey: "time",
+          min: 0
+        },
+        {
+          dataKey: "time",
+          min: 0
+        }
+      ],
+      legendItems: [
+        {
+          value: "trs",
+          marker: { symbol: "square", fill: "#3182bd", radius: 5 }
+        },
+        {
+          value: "time",
+          marker: {
+            symbol: "hyphen",
+            stroke: "#fdae6b",
+            radius: 5,
+            lineWidth: 3
+          }
+        }
+      ],
+      keys: ["height", "trs", "time"]
     };
   },
   components: {
-    headinfo
+    headinfo,
+    viserdouble
   },
   mounted() {},
   methods: {
@@ -97,22 +146,26 @@ export default {
           if (values.start > values.end) {
             console.log("input start height less then end height!");
           } else {
-            let limit = values.end - values.start + 2;
-
-            let server = new Server();
-            server
-              .get("api/blocks", { limit: limit, offset: values.start - 2 })
-              .then(res => {
-                let blocks = res.blocks;
-
-                if (blocks.length > 0) {
-                  this.calcTps(blocks);
-                }
-              })
-              .catch(() => {});
+            let len = values.end - values.start + 2;
+            this.getBlocks(values.start - 2, len);
           }
         }
       });
+    },
+    async getBlocks(startHeight, len) {
+      let blocks = [];
+      let server = new Server();
+      for (let i = 0; i < len; i += 100) {
+        let limit = 100;
+        let offset = startHeight + i;
+        if (i + 100 > len) {
+          limit = len - i;
+        }
+        let res = await server.get("api/blocks", { limit, offset });
+        blocks = blocks.concat(res.blocks);
+      }
+
+      this.calcTps(blocks);
     },
     calcTps(blocks) {
       let useBlocks = [];
@@ -142,6 +195,7 @@ export default {
         len = useBlocks.length;
 
         let totalTimes = useBlocks[len - 1].timestamp - useBlocks[0].timestamp;
+        this.data = [];
         for (let i = 0; i < len; i++) {
           totalTrs += useBlocks[i].numberOfTransactions;
 
@@ -150,9 +204,16 @@ export default {
           }
 
           if (i > 0) {
-            if (useBlocks[i].timestamp - useBlocks[i - 1].timestamp > maxgap) {
-              maxgap = useBlocks[i].timestamp - useBlocks[i - 1].timestamp;
+            let blockTime = useBlocks[i].timestamp - useBlocks[i - 1].timestamp;
+            if (blockTime > maxgap) {
+              maxgap = blockTime;
             }
+
+            this.data.push({
+              height: useBlocks[i].height,
+              trs: useBlocks[i].numberOfTransactions,
+              time: blockTime
+            });
           }
         }
         tps = totalTrs / totalTimes;
@@ -172,7 +233,24 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.head-area {
+.wrapper-content {
   padding-bottom: 20px;
+
+  .head-area {
+    padding-bottom: 20px;
+  }
+  .body-area {
+    background-color: #fff;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+
+    .body-area-left {
+      width: 350px;
+    }
+    .body-area-right {
+      width: calc(100% - 350px);
+    }
+  }
 }
 </style>
