@@ -25,12 +25,9 @@
     </div>
     <div class="body-area">
       <div class="chart-title">
-        <h4>对应高度出块时间：</h4>
+        <h4>出块状态:</h4>
       </div>
-      <viserbar :data="avgData"
-                :height="barHeight"
-                :scale="barScale"
-                :position="barPosition" />
+      <viserbar :vdata="vdata" />
     </div>
   </div>
 </template>
@@ -38,10 +35,10 @@
 <script>
 import Server from "@/scripts/server.js";
 import headinfo from "@/components/tool/HeadInfo";
-import viserbar from "@/components/viser/ViserBar";
+import viserbar from "@/components/viser/ViserDouble";
 
 const AVG_LEN = 505;
-const BAR_LEN = 20;
+const BAR_LEN = 30;
 
 export default {
   data() {
@@ -49,17 +46,38 @@ export default {
       height: 0,
       avgTime: 0,
       trsNumber: 0,
-      avgData: [],
       prevHeight: 0,
-      barHeight: 250,
-      barScale: [
-        {
-          dataKey: "avgTime",
-          tickInterval: 3,
-          min: 0
-        }
-      ],
-      barPosition: "height*avgTime"
+      vdata: {
+        data: [],
+        height: 250,
+        scale: [
+          {
+            dataKey: "height",
+            tickInterval: 1
+          },
+          {
+            dataKey: "time",
+            min: 0
+          },
+          {
+            dataKey: "tps",
+            min: 0
+          }
+        ],
+        axis: [
+          {
+            key: "height"
+          },
+          {
+            key: "time",
+            color: "#1890ff"
+          },
+          {
+            key: "tps",
+            color: "#fdae6b"
+          }
+        ]
+      }
     };
   },
   components: {
@@ -131,14 +149,17 @@ export default {
         .then(res => {
           let blocks = res.blocks.reverse();
 
-          let timeDate = [];
+          let data = [];
           for (let i = 0; i < blocks.length - 1; i++) {
-            timeDate.push({
+            let avg = blocks[i + 1].timestamp - blocks[i].timestamp;
+            let trs = blocks[i + 1].numberOfTransactions;
+            data.push({
               height: blocks[i + 1].height.toString(),
-              avgTime: blocks[i + 1].timestamp - blocks[i].timestamp
+              time: avg,
+              tps: trs / avg
             });
           }
-          this.avgData = timeDate;
+          this.vdata.data = data;
         })
         .catch(() => {});
     }
@@ -154,7 +175,7 @@ export default {
     padding-bottom: 20px;
   }
   .body-area {
-    height: 250px;
+    height: 320px;
     background-color: #fff;
 
     .chart-title {

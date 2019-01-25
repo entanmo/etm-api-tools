@@ -519,7 +519,7 @@ let data = {
           desc: "请求是否成功"
         },
         {
-          name: "accounts",
+          name: "transactions",
           type: "json",
           desc: "账户信息元组，每个元素包含地址、余额、公钥"
         },

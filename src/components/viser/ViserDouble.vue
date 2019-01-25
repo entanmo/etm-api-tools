@@ -1,27 +1,27 @@
 <template>
   <div class="chart-content">
     <v-chart :force-fit="true"
-             :height="height"
-             :data="data"
-             :scale="scale"
-             :padding="['auto',50,'auto',50]">
+             :height="vdata.height"
+             :data="vdata.data"
+             :scale="vdata.scale"
+             :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
       <v-tooltip />
       <v-legend :custom="legendCustom"
                 :allow-all-canceled="legendAllowAllCanceled"
                 :items="legendItems"
                 :on-click="legendOnClick" />
-      <v-axis :data-key="keys[1]"
-              :label="{textStyle:{fill: legendItems[0].marker.fill}}" />
-      <v-axis :data-key="keys[2]"
-              :label="{textStyle:{fill: legendItems[1].marker.stroke}}" />
-      <v-bar :position="keys[0]+'*'+keys[1]"
-             :color="legendItems[0].marker.fill" />
-      <v-smooth-line :position="keys[0]+'*'+keys[2]"
-                     :color="legendItems[1].marker.stroke"
+      <v-axis :data-key="vdata.axis[1].key"
+              :label="{textStyle:{fill: vdata.axis[1].color}}" />
+      <v-axis :data-key="vdata.axis[2].key"
+              :label="{textStyle:{fill: vdata.axis[2].color}}" />
+      <v-bar :position="vdata.axis[0].key+'*'+vdata.axis[1].key"
+             :color="vdata.axis[1].color" />
+      <v-smooth-line :position="vdata.axis[0].key+'*'+vdata.axis[2].key"
+                     :color="vdata.axis[2].color"
                      :size="gemoSize" />
       <v-point shape="circle"
-               :position="keys[0]+'*'+keys[2]"
-               :color="legendItems[1].marker.stroke"
+               :position="vdata.axis[0].key+'*'+vdata.axis[2].key"
+               :color="vdata.axis[2].color"
                :size="gemoSize" />
     </v-chart>
   </div>
@@ -31,17 +31,26 @@
 export default {
   data() {
     return {
-      axisLabelLeft: {
-        textStyle: {
-          fill: "#3182bd"
-        }
-      },
-      axisLabel: {
-        textStyle: {
-          fill: "#fdae6b"
-        }
-      },
       gemoSize: 3,
+      legendItems: [
+        {
+          value: "time",
+          marker: {
+            symbol: "square",
+            fill: this.vdata.axis[1].color,
+            radius: 5
+          }
+        },
+        {
+          value: this.vdata.axis[2].key,
+          marker: {
+            symbol: "hyphen",
+            stroke: this.vdata.axis[2].color,
+            radius: 5,
+            lineWidth: 3
+          }
+        }
+      ],
       legendCustom: true,
       legendAllowAllCanceled: true,
       legendOnClick: (ev, chart) => {
@@ -63,11 +72,7 @@ export default {
     };
   },
   props: {
-    data: Array,
-    height: Number,
-    scale: Array,
-    legendItems: Array,
-    keys: Array
+    vdata: Object
   }
 };
 </script>

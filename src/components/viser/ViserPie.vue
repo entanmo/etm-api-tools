@@ -1,15 +1,16 @@
 <template>
   <div class="chart-content">
     <v-chart :force-fit="true"
-             :height="height"
-             :data="data"
-             :scale="scale">
+             :height="vdata.height"
+             :data="vdata.data"
+             :scale="vdata.scale"
+             :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
       <v-tooltip :showTitle="false"
-                 :dataKey="position" />
+                 :dataKey="vdata.axis[0].key+'*'+vdata.axis[1].key" />
       <v-axis />
-      <v-legend dataKey="height" />
-      <v-pie position="trs"
-             color="height"
+      <v-legend dataKey="type" />
+      <v-pie :position="vdata.axis[1].key"
+             :color="vdata.axis[0].key"
              :v-style="pieStyle"
              :label="labelConfig" />
       <v-coord type="theta" />
@@ -21,39 +22,28 @@
 export default {
   data() {
     return {
-      // data: [
-      //   { height: "123456", trs: 40 },
-      //   { height: "123457", trs: 21 },
-      //   { height: "123458", trs: 17 },
-      //   { height: "123459", trs: 13 },
-      //   { height: "123460", trs: 90 }
-      // ],
-      // scale: [
-      //   {
-      //     dataKey: "trs",
-      //     min: 0
-      //   }
-      // ],
-      // height: 300,
       pieStyle: {
         stroke: "#fff",
         lineWidth: 1
       },
       labelConfig: [
-        "trs",
+        this.vdata.axis[1].key,
         {
           formatter: (val, item) => {
-            return "height=" + item.point.height + ": " + val;
+            return (
+              this.vdata.axis[0].key +
+              "=" +
+              item.point[this.vdata.axis[0].key] +
+              ": " +
+              val
+            );
           }
         }
       ]
     };
   },
   props: {
-    data: Array,
-    height: Number,
-    scale: Array,
-    position: String
+    vdata: Object
   }
 };
 </script>

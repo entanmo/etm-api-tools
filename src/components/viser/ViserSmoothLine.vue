@@ -1,17 +1,17 @@
 <template>
   <div class="chart-content">
     <v-chart :force-fit="true"
-             :height="height"
-             :data="data"
-             :scale="scale"
-             :padding="['auto',50,'auto',50]">
+             :height="vdata.height"
+             :data="vdata.data"
+             :scale="vdata.scale"
+             :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
       <v-tooltip />
       <v-axis title />
-      <v-smooth-line :position="position"
-                     color="blue"
+      <v-smooth-line :position="vdata.axis[0].key+'*'+vdata.axis[1].key"
+                     :color="vdata.axis[1].color"
                      shape="smooth" />
-      <v-point :position="position"
-               color="green"
+      <v-point :position="vdata.axis[0].key+'*'+vdata.axis[1].key"
+               :color="vdata.axis[1].color2"
                shape="circle" />
     </v-chart>
   </div>
@@ -23,10 +23,7 @@ export default {
     return {};
   },
   props: {
-    data: Array,
-    height: Number,
-    scale: Array,
-    position: String
+    vdata: Object
   }
 };
 </script>

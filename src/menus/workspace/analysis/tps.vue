@@ -67,16 +67,12 @@
         </a-form>
       </div>
       <div class="body-area-right"
-           v-show="data.length>0">
+           v-show="vdata.data.length>0">
         <div class="top-title">
           <h4>包含交易块对应的交易量和耗时：</h4>
         </div>
         <div class="chart-center">
-          <viserdouble :data="data"
-                       :height="height"
-                       :scale="scale"
-                       :legendItems="legendItems"
-                       :keys="keys" />
+          <viserdouble :vdata="vdata" />
         </div>
       </div>
     </div>
@@ -98,38 +94,37 @@ export default {
       maxgap: 0,
       len: 0,
       totalTrs: 0,
-      data: [],
-      height: 250,
-      scale: [
-        {
-          dataKey: "height",
-          tickInterval: 1
-        },
-        {
-          dataKey: "time",
-          min: 0
-        },
-        {
-          dataKey: "time",
-          min: 0
-        }
-      ],
-      legendItems: [
-        {
-          value: "trs",
-          marker: { symbol: "square", fill: "#3182bd", radius: 5 }
-        },
-        {
-          value: "time",
-          marker: {
-            symbol: "hyphen",
-            stroke: "#fdae6b",
-            radius: 5,
-            lineWidth: 3
+      vdata: {
+        data: [],
+        height: 250,
+        scale: [
+          {
+            dataKey: "height",
+            tickInterval: 1
+          },
+          {
+            dataKey: "time",
+            min: 0
+          },
+          {
+            dataKey: "trs",
+            min: 0
           }
-        }
-      ],
-      keys: ["height", "trs", "time"]
+        ],
+        axis: [
+          {
+            key: "height"
+          },
+          {
+            key: "time",
+            color: "#3182bd"
+          },
+          {
+            key: "trs",
+            color: "#fdae6b"
+          }
+        ]
+      }
     };
   },
   components: {
@@ -176,6 +171,7 @@ export default {
       let maxgap = 0;
       let len = 0;
       let totalTrs = 0;
+      let o_data = [];
 
       for (let i = 1; i < blocks.length; i++) {
         if (blocks[i].numberOfTransactions > 0 && startBlockNum < 0) {
@@ -195,7 +191,6 @@ export default {
         len = useBlocks.length;
 
         let totalTimes = useBlocks[len - 1].timestamp - useBlocks[0].timestamp;
-        this.data = [];
         for (let i = 0; i < len; i++) {
           totalTrs += useBlocks[i].numberOfTransactions;
 
@@ -209,7 +204,7 @@ export default {
               maxgap = blockTime;
             }
 
-            this.data.push({
+            o_data.push({
               height: useBlocks[i].height,
               trs: useBlocks[i].numberOfTransactions,
               time: blockTime
@@ -223,6 +218,8 @@ export default {
       this.maxgap = maxgap;
       this.len = len - 1;
       this.totalTrs = totalTrs;
+
+      this.vdata.data = o_data;
 
       let message = "TPS统计区块:" + JSON.stringify(useBlocks, null, 2);
       this.$store.state.api.returnMsg =

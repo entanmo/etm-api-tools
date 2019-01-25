@@ -1,12 +1,13 @@
 <template>
   <div class="chart-content">
     <v-chart :force-fit="true"
-             :height="height"
-             :data="data"
-             :scale="scale">
+             :height="vdata.height"
+             :data="vdata.data"
+             :scale="vdata.scale"
+             :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
       <v-tooltip />
       <v-axis />
-      <v-bar :position="position" />
+      <v-bar :position="vdata.axis[0].key+'*'+vdata.axis[1].key" />
     </v-chart>
   </div>
 </template>
@@ -17,10 +18,7 @@ export default {
     return {};
   },
   props: {
-    data: Array,
-    height: Number,
-    scale: Array,
-    position: String
+    vdata: Object
   }
 };
 </script>

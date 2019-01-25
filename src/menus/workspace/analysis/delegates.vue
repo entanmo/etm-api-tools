@@ -45,11 +45,8 @@
           </div>
         </div>
         <div class="chart-center">
-          <viserbar v-show="!disabled"
-                    :data="data"
-                    :height="height"
-                    :scale="scale"
-                    :position="position" />
+          <visersmoothline v-show="!disabled"
+                           :vdata="vdata" />
         </div>
 
       </div>
@@ -59,22 +56,33 @@
 
 <script>
 import Server from "@/scripts/server.js";
-import viserbar from "@/components/viser/ViserSmoothLine";
+import visersmoothline from "@/components/viser/ViserSmoothLine";
 import headinfo from "@/components/tool/HeadInfo";
 
 export default {
   data() {
     return {
-      data: [],
-      height: 250,
-      scale: [
-        {
-          dataKey: "count",
-          tickInterval: 1,
-          min: 0
-        }
-      ],
-      position: "username*count",
+      vdata: {
+        data: [],
+        height: 250,
+        scale: [
+          {
+            dataKey: "count",
+            tickInterval: 1,
+            min: 0
+          }
+        ],
+        axis: [
+          {
+            key: "username"
+          },
+          {
+            key: "count",
+            color: "blue",
+            color2: "green"
+          }
+        ]
+      },
       disabled: true,
       totalDelegates: 0,
       range: "0--0",
@@ -83,7 +91,7 @@ export default {
     };
   },
   components: {
-    viserbar,
+    visersmoothline,
     headinfo
   },
   methods: {
@@ -93,7 +101,7 @@ export default {
       if (checked) {
         this.getBlocks(this.startHeight - 1, this.len);
       } else {
-        this.data = [];
+        this.vdata.data = [];
         this.totalDelegates = 0;
         this.range = "0--0";
       }
@@ -131,7 +139,7 @@ export default {
         if (res.delegate && res.delegate.username) {
           username = res.delegate.username;
         }
-        this.data.push({
+        this.vdata.data.push({
           username: username,
           count: generators[key]
         });

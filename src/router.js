@@ -55,6 +55,12 @@ export default new Router({
                   icon: "none"
                 },
                 {
+                  path: "/workspace/analysis/trs",
+                  name: "交易统计",
+                  component: () => import("@/menus/workspace/analysis/trs"),
+                  icon: "none"
+                },
+                {
                   path: "/workspace/analysis/votes",
                   name: "票数统计",
                   component: () => import("@/menus/workspace/analysis/votes"),

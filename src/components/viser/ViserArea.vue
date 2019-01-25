@@ -1,21 +1,16 @@
 <template>
   <div class="chart-content">
     <v-chart :force-fit="true"
-             :height="height"
-             :data="data"
-             :scale="scale">
+             :height="vdata.height"
+             :data="vdata.data"
+             :scale="vdata.scale"
+             :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
       <v-tooltip />
       <v-axis />
-      <v-line :position="position" :size="2" />
-      <v-area :position="position" />
+      <v-line :position="vdata.axis[0].key+'*'+vdata.axis[1].key" :size="2" />
+      <v-area :position="vdata.axis[0].key+'*'+vdata.axis[1].key" />
     </v-chart>
   </div>
-  <!-- <v-chart :forceFit="true" :height="height" :data="data" :scale="scale">
-    <v-tooltip />
-    <v-axis />
-    <v-line position="year*value" :size="2" />
-    <v-area position="year*value" />
-  </v-chart> -->
 </template>
 
 <script>
@@ -24,10 +19,7 @@ export default {
     return {};
   },
   props: {
-    data: Array,
-    height: Number,
-    scale: Array,
-    position: String
+    vdata: Object
   }
 };
 </script>

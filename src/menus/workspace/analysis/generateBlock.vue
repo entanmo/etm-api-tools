@@ -5,14 +5,14 @@
         <a-row>
           <a-col :sm="12"
                  :xs="36">
-            <headinfo title="最新高度"
-                      :content="lastHeight"
+            <headinfo title="统计范围"
+                      :content="range"
                       :bordered="true" />
           </a-col>
           <a-col :sm="12"
                  :xs="36">
-            <headinfo title="统计范围"
-                      :content="range" />
+            <headinfo title="统计范围的平均时间"
+                      :content="avgTime" />
           </a-col>
         </a-row>
       </a-card>
@@ -38,10 +38,7 @@
           </div>
         </div>
         <div class="chart-center">
-          <viserbar :data="data"
-                    :height="height"
-                    :scale="scale"
-                    :position="position" />
+          <viserbar :vdata="vdata" />
         </div>
 
       </div>
@@ -57,20 +54,38 @@ import headinfo from "@/components/tool/HeadInfo";
 export default {
   data() {
     return {
-      data: [],
-      height: 250,
-      scale: [
-        {
-          dataKey: "time",
-          tickInterval: 3,
-          min: 0
-        }
-      ],
-      position: "height*time",
+      vdata: {
+        data: [],
+        height: 250,
+        scale: [
+          {
+            dataKey: "time",
+            min: 0
+          }
+        ],
+        axis: [
+          {
+            key: "height"
+          },
+          {
+            key: "time"
+          }
+        ]
+      },
+      // data: [],
+      // height: 250,
+      // scale: [
+      //   {
+      //     dataKey: "time",
+      //     // tickInterval: 3,
+      //     min: 0
+      //   }
+      // ],
+      // position: "height*time",
       disabled: true,
       barLength: 20,
       interval: null,
-      lastHeight: 0,
+      avgTime: 0,
       range: "0-0"
     };
   },
@@ -108,10 +123,14 @@ export default {
               time: blocks[i + 1].timestamp - blocks[i].timestamp
             });
           }
-          this.lastHeight = blocks[blocks.length - 1].height;
+
           this.range =
             blocks[0].height + "--" + blocks[blocks.length - 1].height;
-          this.data = timeDate;
+          this.avgTime = (
+            (blocks[blocks.length - 1].timestamp - blocks[0].timestamp) /
+            (blocks.length - 1)
+          ).toFixed(2);
+          this.vdata.data = timeDate;
         })
         .catch(() => {});
     }
