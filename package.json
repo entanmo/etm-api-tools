@@ -14,6 +14,7 @@
     "viser-vue": "^2.4.4",
     "vue": "^2.5.21",
     "vue-router": "^3.0.1",
+    "vue-socket.io": "^3.0.5",
     "vuex": "^3.0.1"
   },
   "devDependencies": {
