@@ -5,10 +5,9 @@
              :data="vdata.data"
              :scale="vdata.scale"
              :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
-      <v-tooltip :showTitle="false"
-                 :dataKey="vdata.axis[0].key+'*'+vdata.axis[1].key" />
+      <v-tooltip :showTitle="false" />
       <v-axis />
-      <v-legend dataKey="type" />
+      <v-legend :dataKey="vdata.axis[0].key" />
       <v-pie :position="vdata.axis[1].key"
              :color="vdata.axis[0].key"
              :v-style="pieStyle"
@@ -30,13 +29,7 @@ export default {
         this.vdata.axis[1].key,
         {
           formatter: (val, item) => {
-            return (
-              this.vdata.axis[0].key +
-              "=" +
-              item.point[this.vdata.axis[0].key] +
-              ": " +
-              val
-            );
+            return item.point[this.vdata.axis[0].key] + ": " + val;
           }
         }
       ]

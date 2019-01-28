@@ -43,6 +43,7 @@ const BAR_LEN = 30;
 export default {
   data() {
     return {
+      isLoading: this.$store.state.setting.isLoading,
       height: 0,
       avgTime: 0,
       trsNumber: 0,
@@ -84,14 +85,10 @@ export default {
     headinfo,
     viserbar
   },
-  mounted() {
-    this.getHeight();
-    this.changeAvgData();
-    this.calcAvgTime();
-
-    setInterval(() => {
+  sockets: {
+    "blocks/change": function() {
       this.getHeight();
-    }, 3000);
+    }
   },
   methods: {
     onChange() {},

@@ -72,16 +72,6 @@ export default {
           }
         ]
       },
-      // data: [],
-      // height: 250,
-      // scale: [
-      //   {
-      //     dataKey: "time",
-      //     // tickInterval: 3,
-      //     min: 0
-      //   }
-      // ],
-      // position: "height*time",
       disabled: true,
       barLength: 20,
       interval: null,
@@ -93,21 +83,20 @@ export default {
     headinfo,
     viserbar
   },
+  sockets: {
+    "blocks/change": function() {
+      if (!this.disabled) {
+        this.changeAvgData();
+      }
+    }
+  },
   methods: {
     onSlider(value) {
       this.barLength = value;
     },
     onSwitch(checked) {
       this.disabled = !checked;
-
-      if (checked) {
-        this.changeAvgData();
-        this.interval = setInterval(() => {
-          this.changeAvgData();
-        }, 3000);
-      } else {
-        clearInterval(this.interval);
-      }
+      this.changeAvgData();
     },
     changeAvgData() {
       let server = new Server();

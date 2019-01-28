@@ -1,4 +1,5 @@
 import etmjs from "etm-js";
+import config from "@/assets/ipconfig";
 
 let Utils = {
   processString(str) {
@@ -30,7 +31,8 @@ let Utils = {
   },
 
   getAddressBySecret(secret) {
-    "secret", console.log(secret);
+    "secret",
+    console.log(secret);
     let publicKey = etmjs.crypto.getKeys(secret).publicKey;
     console.log("publicKey", publicKey.toString());
     let address = etmjs.crypto.getAddress(publicKey);
@@ -39,10 +41,23 @@ let Utils = {
     return address;
   },
 
-  GetAddress(publicKey) {
+  getAddress(publicKey) {
     let address = etmjs.crypto.getNewAddress(publicKey);
 
     return address;
+  },
+
+  getUrl() {
+    let url = localStorage.getItem("url");
+    if (!url) {
+      url = {
+        type: config.type,
+        ip: config.ip
+      };
+    } else {
+      url = JSON.parse(url);
+    }
+    return url;
   }
 };
 

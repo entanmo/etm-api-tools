@@ -1,14 +1,9 @@
 import Axios from "axios";
-import config from "@/assets/ipconfig";
+import utils from "@/scripts/utils/utils.js"
 
 class Server {
   constructor() {
-    let url = localStorage.getItem("url");
-    if (!url) {
-      url = { type: config.type, ip: config.ip };
-    } else {
-      url = JSON.parse(url);
-    }
+    let url = utils.getUrl();
     this.$ajax = Axios.create({
       // baseURL: "http://47.110.42.170:4098",39.98.65.187:5000
       // baseURL: 'http://47.107.148.76:4096',

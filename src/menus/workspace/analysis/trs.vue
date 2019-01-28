@@ -35,16 +35,18 @@
           </div>
           <div class="top-btn">
             <a-button type="primary"
-                      @click="onSend">查询</a-button>
+                      @click="onSend" :disabled="address==''">查询</a-button>
           </div>
         </div>
         <div class="chart-center">
-          <div class="center-pie">
-            发送交易：
-            <viserpie :vdata="vdata1" />
+          <div class="center-pie"
+               v-show="vdata1.data.length>0">
+            所发送交易：
+            <visersecotr :vdata="vdata1" />
           </div>
-          <div class="center-pie">
-            接收交易：
+          <div class="center-pie"
+               v-show="vdata2.data.length>0">
+            所接收交易：
             <viserpie :vdata="vdata2" />
           </div>
         </div>
@@ -56,6 +58,7 @@
 <script>
 import Server from "@/scripts/server.js";
 import viserpie from "@/components/viser/ViserPie";
+import visersecotr from "@/components/viser/ViserSector";
 import headinfo from "@/components/tool/HeadInfo";
 
 export default {
@@ -63,7 +66,7 @@ export default {
     return {
       vdata1: {
         data: [],
-        height: 250,
+        height: 300,
         scale: [
           {
             dataKey: "count",
@@ -81,7 +84,7 @@ export default {
       },
       vdata2: {
         data: [],
-        height: 250,
+        height: 300,
         scale: [
           {
             dataKey: "count",
@@ -105,6 +108,7 @@ export default {
   },
   components: {
     viserpie,
+    visersecotr,
     headinfo
   },
   methods: {
@@ -113,25 +117,36 @@ export default {
       let res1 = await server.get("api/transactions", {
         senderId: this.address
       });
-      for (let i = 0; i < res1.transactions.length; i++) {
-        this.vdata1.data.push({
-          type: res1.transactions[i].type.toString(),
-          count: 1
-        });
-      }
+      this.sendcount = res1.transactions.length;
+      this.vdata1.data = this.dealTrs(res1.transactions);
 
       let res2 = await server.get("api/transactions", {
         recipientId: this.address
       });
-      for (let i = 0; i < res2.transactions.length; i++) {
-        this.vdata2.data.push({
-          type: res2.transactions[i].type.toString(),
-          count: 1
-        });
-      }
+      this.recivecount  = res2.transactions.length;
+      this.vdata2.data = this.dealTrs(res2.transactions);
 
       let res3 = await server.get("api/accounts", { address: this.address });
       this.balance = res3.account.balance;
+    },
+    dealTrs(trs) {
+      let trs1 = {};
+      let data = [];
+      for (let i = 0; i < trs.length; i++) {
+        if (trs1[trs[i].type]) {
+          trs1[trs[i].type] += 1;
+        } else {
+          trs1[trs[i].type] = 1;
+        }
+      }
+      let keys = Object.keys(trs1);
+      for (let i = 0; i < keys.length; i++) {
+        data.push({
+          type: "type=" + keys[i].toString(),
+          count: trs1[keys[i]]
+        });
+      }
+      return data;
     }
   }
 };
@@ -171,7 +186,7 @@ export default {
 
         .center-pie {
           width: 50%;
-          padding: 10px;
+          padding: 20px 10px 10px;
         }
       }
     }
