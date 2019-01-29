@@ -138,11 +138,13 @@ export default {
       this.form.validateFields((err, values) => {
         if (!err) {
           console.log("Received values of form: ", values);
-          if (values.start > values.end) {
-            console.log("input start height less then end height!");
+          let start = parseInt(values.start);
+          let end = parseInt(values.end);
+          if (start > end) {
+            console.log("input start height bigger then end height!");
           } else {
-            let len = values.end - values.start + 2;
-            this.getBlocks(values.start - 2, len);
+            let len = end - start + 2;
+            this.getBlocks(start - 2, len);
           }
         }
       });
