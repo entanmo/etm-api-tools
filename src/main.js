@@ -13,10 +13,12 @@ Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
 let url = utils.getUrl();
-Vue.use(new VueSocketIO({
-  debug: false,
-  connection: url.type + url.ip
-}));
+Vue.use(
+  new VueSocketIO({
+    debug: false,
+    connection: url.type + url.ip
+  })
+);
 
 Vue.use(Viser);
 Vue.use(Antd);

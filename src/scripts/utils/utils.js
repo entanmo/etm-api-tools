@@ -31,8 +31,7 @@ let Utils = {
   },
 
   getAddressBySecret(secret) {
-    "secret",
-    console.log(secret);
+    "secret", console.log(secret);
     let publicKey = etmjs.crypto.getKeys(secret).publicKey;
     console.log("publicKey", publicKey.toString());
     let address = etmjs.crypto.getAddress(publicKey);

@@ -21,7 +21,7 @@
                      :size="gemoSize" />
       <v-point shape="circle"
                :position="vdata.axis[0].key+'*'+vdata.axis[2].key"
-               :color="vdata.axis[2].color"
+               :color="vdata.axis[2].color2"
                :size="gemoSize" />
     </v-chart>
   </div>

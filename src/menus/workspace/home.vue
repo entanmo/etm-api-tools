@@ -71,11 +71,12 @@ export default {
           },
           {
             key: "time",
-            color: "#1890ff"
+            color: "#67c7f396"
           },
           {
             key: "tps",
-            color: "#fdae6b"
+            color: "#fdae6b",
+            color2:"#52c41a"
           }
         ]
       }

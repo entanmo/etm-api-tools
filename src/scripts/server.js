@@ -1,5 +1,5 @@
 import Axios from "axios";
-import utils from "@/scripts/utils/utils.js"
+import utils from "@/scripts/utils/utils.js";
 
 class Server {
   constructor() {

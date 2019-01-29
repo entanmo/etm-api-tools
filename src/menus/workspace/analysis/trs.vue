@@ -123,7 +123,7 @@ export default {
       let res2 = await server.get("api/transactions", {
         recipientId: this.address
       });
-      this.recivecount  = res2.transactions.length;
+      this.recivecount = res2.transactions.length;
       this.vdata2.data = this.dealTrs(res2.transactions);
 
       let res3 = await server.get("api/accounts", { address: this.address });
