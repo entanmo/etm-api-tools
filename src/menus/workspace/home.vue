@@ -61,7 +61,7 @@ export default {
             min: 0
           },
           {
-            dataKey: "tps",
+            dataKey: "trs",
             min: 0
           }
         ],
@@ -74,7 +74,7 @@ export default {
             color: "#67c7f396"
           },
           {
-            key: "tps",
+            key: "trs",
             color: "#fdae6b",
             color2:"#52c41a"
           }
@@ -154,7 +154,7 @@ export default {
             data.push({
               height: blocks[i + 1].height.toString(),
               time: avg,
-              tps: trs / avg
+              trs: trs
             });
           }
           this.vdata.data = data;
