@@ -30,8 +30,8 @@
             <h4>投票人总览：</h4>
           </div>
           <div class="top-btn">
-            <a-switch checkedChildren="开"
-                      unCheckedChildren="关"
+            <a-switch checkedChildren="统计开"
+                      unCheckedChildren="统计关"
                       @change="onSwitch" />
           </div>
         </div>

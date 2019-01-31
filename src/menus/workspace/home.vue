@@ -76,7 +76,7 @@ export default {
           {
             key: "trs",
             color: "#fdae6b",
-            color2:"#52c41a"
+            color2: "#52c41a"
           }
         ]
       }
@@ -92,7 +92,6 @@ export default {
     }
   },
   methods: {
-    onChange() {},
     getHeight() {
       let server = new Server();
       server
