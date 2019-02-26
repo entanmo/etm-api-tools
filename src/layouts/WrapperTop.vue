@@ -116,15 +116,16 @@ export default {
       let modules = paths[2];
       let item = paths[3];
       let apiData = api[modules][item];
-
+      console.log(api, apiData, modules, item);
       this.name = apiData.name;
       this.uri = apiData.uri;
       this.method = apiData.method;
       this.remark = apiData.remark;
-      this.reqData = apiData.req;
+      this.reqData = this.deepCopy(apiData.req);
       this.resData = apiData.res;
 
       for (let i = 0; i < apiData.req.length; i++) {
+        console.log(apiData.req[i].isRequired);
         if (apiData.req[i].isRequired) {
           this.reqData[i].isRequired = "是";
         } else {
@@ -203,6 +204,21 @@ export default {
             }
           });
       }
+    },
+    deepCopy(obj) {
+      // 只拷贝对象
+      if (typeof obj !== "object") return obj;
+      // 根据obj的类型判断是新建一个数组还是一个对象
+      var newObj = obj instanceof Array ? [] : {};
+      for (var key in obj) {
+        // 遍历obj,并且判断是obj的属性才拷贝
+        if (obj.hasOwnProperty(key)) {
+          // 判断属性值的类型，如果是对象递归调用深拷贝
+          newObj[key] =
+            typeof obj[key] === "object" ? this.deepCopy(obj[key]) : obj[key];
+        }
+      }
+      return newObj;
     }
   }
 };
