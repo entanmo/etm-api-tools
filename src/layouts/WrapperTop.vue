@@ -116,7 +116,6 @@ export default {
       let modules = paths[2];
       let item = paths[3];
       let apiData = api[modules][item];
-      console.log(api, apiData, modules, item);
       this.name = apiData.name;
       this.uri = apiData.uri;
       this.method = apiData.method;
@@ -125,7 +124,6 @@ export default {
       this.resData = apiData.res;
 
       for (let i = 0; i < apiData.req.length; i++) {
-        console.log(apiData.req[i].isRequired);
         if (apiData.req[i].isRequired) {
           this.reqData[i].isRequired = "是";
         } else {
