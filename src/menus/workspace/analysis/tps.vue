@@ -36,40 +36,32 @@
       </a-card>
     </div>
     <div class="body-area">
-      <div class="body-area-left">
-        <a-form @submit="handleSubmit"
-                :form="form">
-          <a-form-item label='开始高度'
-                       :labelCol="{ span: 6 }"
-                       :wrapperCol="{ span: 14 }">
-            <a-input v-decorator="[
-          'start',
-          {rules: [{ required: true, message: '起始高度必须输入' }]}
-        ]"
-                     placeholder='请输入计算TPS的结束高度!' />
-          </a-form-item>
-          <a-form-item label='结束高度'
-                       :labelCol="{ span: 6 }"
-                       :wrapperCol="{ span: 14 }">
-            <a-input v-decorator="[
-          'end',
-          {rules: [{ required: true, message: '结束高度必须输入' }]}
-        ]"
-                     placeholder='请输入计算TPS的结束高度!'>
-            </a-input>
-          </a-form-item>
-          <a-form-item :wrapperCol="{ span: 5, offset: 6 }">
+      <div class="chart">
+        <div class="chart-top">
+          <div class="top-title">
+            <h4>TPS计算：</h4>
+          </div>
+          <div>
+            开始高度：
+            <a-input-number :min="2"
+                            v-model="startHeight"
+                            @change="onChange"
+                            size="small" />
+          </div>
+          <div>
+            结束高度
+            <a-input-number :min="2"
+                            v-model="endHeight"
+                            @change="onChange"
+                            size="small" />
+          </div>
+          <div class="top-btn">
             <a-button type='primary'
-                      htmlType='submit'>
+                      @click='calc'
+                      :disabled="!canCalc">
               计算
             </a-button>
-          </a-form-item>
-        </a-form>
-      </div>
-      <div class="body-area-right"
-           v-show="vdata.data.length>0">
-        <div class="top-title">
-          <h4>包含交易块对应的交易量和耗时：</h4>
+          </div>
         </div>
         <div class="chart-center">
           <viserdouble :vdata="vdata" />
@@ -94,6 +86,9 @@ export default {
       maxgap: 0,
       len: 0,
       totalTrs: 0,
+      startHeight: "",
+      endHeight: "",
+      canCalc: false,
       vdata: {
         data: [],
         height: 250,
@@ -133,21 +128,24 @@ export default {
   },
   mounted() {},
   methods: {
-    handleSubmit(e) {
-      e.preventDefault();
-      this.form.validateFields((err, values) => {
-        if (!err) {
-          console.log("Received values of form: ", values);
-          let start = parseInt(values.start);
-          let end = parseInt(values.end);
-          if (start > end) {
-            console.log("input start height bigger then end height!");
-          } else {
-            let len = end - start + 2;
-            this.getBlocks(start - 2, len);
-          }
-        }
-      });
+    calc() {
+      let start = parseInt(this.startHeight);
+      let end = parseInt(this.endHeight);
+      if (start > end) {
+        console.log("input start height bigger then end height!");
+      } else {
+        let len = end - start + 2;
+        this.getBlocks(start - 2, len);
+      }
+    },
+    onChange() {
+      let start = parseInt(this.startHeight);
+      let end = parseInt(this.endHeight);
+      if (end > start) {
+        this.canCalc = true;
+      } else {
+        this.canCalc = false;
+      }
     },
     async getBlocks(startHeight, len) {
       let blocks = [];
@@ -223,9 +221,9 @@ export default {
 
       this.vdata.data = o_data;
 
-      let message = "TPS统计区块:" + JSON.stringify(useBlocks, null, 2);
-      this.$store.state.api.returnMsg =
-        message + "\r\n" + this.$store.state.api.returnMsg;
+      // let message = "TPS统计区块:" + JSON.stringify(useBlocks, null, 2);
+      // this.$store.state.api.returnMsg =
+      //   message + "\r\n" + this.$store.state.api.returnMsg;
     }
   }
 };
@@ -239,16 +237,20 @@ export default {
     padding-bottom: 20px;
   }
   .body-area {
-    background-color: #fff;
-    padding: 20px;
-    display: flex;
-    justify-content: space-between;
+    .chart {
+      height: 300px;
+      background-color: #fff;
 
-    .body-area-left {
-      width: 350px;
-    }
-    .body-area-right {
-      width: calc(100% - 350px);
+      .chart-top {
+        height: 50px;
+        padding: 10px;
+        display: flex;
+        justify-content: space-between;
+
+        .top-title {
+          width: 100px;
+        }
+      }
     }
   }
 }

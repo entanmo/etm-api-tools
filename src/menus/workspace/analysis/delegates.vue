@@ -5,7 +5,7 @@
         <a-row>
           <a-col :sm="12"
                  :xs="36">
-            <headinfo title="当前轮出块矿工数"
+            <headinfo title="当前范围块矿工数"
                       :content="totalDelegates"
                       :bordered="true" />
           </a-col>

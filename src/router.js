@@ -48,22 +48,35 @@ export default new Router({
                   icon: "none"
                 },
                 {
-                  path: "/workspace/analysis/delegates",
-                  name: "矿工统计",
-                  component: () =>
-                    import("@/menus/workspace/analysis/delegates"),
-                  icon: "none"
-                },
-                {
                   path: "/workspace/analysis/trs",
                   name: "交易统计",
                   component: () => import("@/menus/workspace/analysis/trs"),
                   icon: "none"
                 },
+                // {
+                //   path: "/workspace/analysis/votes",
+                //   name: "票数统计",
+                //   component: () => import("@/menus/workspace/analysis/votes"),
+                //   icon: "none"
+                // },
                 {
-                  path: "/workspace/analysis/votes",
-                  name: "票数统计",
-                  component: () => import("@/menus/workspace/analysis/votes"),
+                  path: "/workspace/analysis/miner",
+                  name: "矿工统计",
+                  component: () => import("@/menus/workspace/analysis/miner"),
+                  icon: "none"
+                }
+              ]
+            },
+            {
+              path: "/workspace/test",
+              name: "测试页",
+              component: RouteView,
+              icon: "issues-close",
+              children: [
+                {
+                  path: "/workspace/test/trs",
+                  name: "交易测试",
+                  component: () => import("@/menus/workspace/test/trs"),
                   icon: "none"
                 }
               ]

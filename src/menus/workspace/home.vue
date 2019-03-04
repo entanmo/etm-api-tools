@@ -25,7 +25,7 @@
     </div>
     <div class="body-area">
       <div class="chart-title">
-        <h4>出块状态:</h4>
+        <h4>出块状态（最近{{barlenght}}块）:</h4>
       </div>
       <viserbar :vdata="vdata" />
     </div>
@@ -37,12 +37,13 @@ import Server from "@/scripts/server.js";
 import headinfo from "@/components/tool/HeadInfo";
 import viserbar from "@/components/viser/ViserDouble";
 
-const AVG_LEN = 505;
-const BAR_LEN = 30;
+// const AVG_LEN = 505;
+const BAR_LEN = 50;
 
 export default {
   data() {
     return {
+      barlenght: BAR_LEN,
       isLoading: this.$store.state.setting.isLoading,
       height: 0,
       avgTime: 0,
@@ -102,7 +103,7 @@ export default {
           if (this.height !== this.prevHeight) {
             this.prevHeight = this.height;
 
-            this.calcAvgTime(AVG_LEN, (err, avg) => {
+            this.calcAvgTime(BAR_LEN, (err, avg) => {
               if (!err) {
                 this.avgTime = avg.toFixed(2);
               }

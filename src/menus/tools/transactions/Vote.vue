@@ -43,9 +43,9 @@ export default {
       }
 
       let secret = Utils.processString(this.secret);
-      let recipient = "-" + Utils.processString(this.recipient);
+      let delegates = ["+" + Utils.processString(this.recipient)];
       let tr = new Transaction();
-      tr.vote({ secret, recipient })
+      tr.vote({ secret, delegates })
         .then(res => {
           let message = "投票操作：" + JSON.stringify(res, null, 2);
           this.$store.state.api.returnMsg =
