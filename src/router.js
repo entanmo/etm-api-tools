@@ -142,6 +142,40 @@ export default new Router({
               ]
             },
             {
+              path: "/tools/bulkTrs",
+              name: "批量交易页",
+              component: RouteView,
+              icon: "swap",
+              children: [
+                {
+                  path: "/tools/bulkTrs/bulktransfer",
+                  name: "批量转账",
+                  component: () =>
+                    import("@/menus/tools/bulkTrs/bulkTransfer"),
+                  icon: "none"
+                },
+                {
+                  path: "/tools/bulkTrs/bulkdelegate",
+                  name: "批量代理",
+                  component: () =>
+                    import("@/menus/tools/bulkTrs/bulkDelegate"),
+                  icon: "none"
+                },
+                {
+                  path: "/tools/bulkTrs/bulklock",
+                  name: "批量锁仓",
+                  component: () => import("@/menus/tools/bulkTrs/bulkLock"),
+                  icon: "none"
+                },
+                {
+                  path: "/tools/bulkTrs/bulkvote",
+                  name: "批量投票",
+                  component: () => import("@/menus/tools/bulkTrs/bulkVote"),
+                  icon: "none"
+                }
+              ]
+            },
+            {
               path: "/tools/queryInfo",
               name: "查询页",
               component: PageView,
