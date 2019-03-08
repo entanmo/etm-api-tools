@@ -105,7 +105,8 @@
             <h4>受托人票数详情：</h4>
           </div>
         </div>
-        <div class="chart-center">
+        <div class="chart-center"
+             id="fitsize1">
           <div class="center-pie"
                v-show="vdata1.data.length>0">
             <visersecotr :vdata="vdata1" />
@@ -161,6 +162,7 @@ export default {
       vdata1: {
         data: [],
         height: 200,
+        width: 600,
         scale: [
           {
             dataKey: "weight",
@@ -287,6 +289,7 @@ export default {
     },
     onCheck(username) {
       let data = this.checkData[username];
+      this.vdata1.width = document.getElementById("fitsize1").clientWidth;
       this.vdata1.data = data.voters;
       this.delegateName = username;
       this.votes = data.vote;
