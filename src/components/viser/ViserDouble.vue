@@ -1,7 +1,8 @@
 <template>
   <div class="chart-content">
-    <v-chart :force-fit="true"
+    <v-chart :force-fit="false"
              :height="vdata.height"
+             :width="vdata.width"
              :data="vdata.data"
              :scale="vdata.scale"
              :padding="{top: 15, right: 50, bottom: 85, left: 50 }">

@@ -35,8 +35,11 @@
                       @change="onSwitch" />
           </div>
         </div>
-        <viserstackbar v-show="vdata0.data.length>0"
-                       :vdata="vdata0" />
+        <div class="chart-center"
+             id="fitsize">
+          <viserstackbar v-show="vdata0.data.length>0"
+                         :vdata="vdata0" />
+        </div>
       </div>
     </div>
     <div class="head-area">
@@ -124,11 +127,13 @@ export default {
     return {
       vdata0: {
         data: [],
-        height: 220,
+        height: 250,
+        width: 600,
         scale: [
           {
             dataKey: "weight",
-            min: 0
+            min: 0,
+            max: 100
           }
         ],
         axis: [
@@ -148,7 +153,9 @@ export default {
             y: ev.y
           };
           var items = chart.getTooltipItems(point);
-          this.onCheck(items[0].title);
+          if (items[0] && items[0].title) {
+            this.onCheck(items[0].title);
+          }
         }
       },
       vdata1: {
@@ -188,8 +195,10 @@ export default {
     visersecotr,
     viserstackbar
   },
-  mounted() {},
   methods: {
+    getViserWidth(id) {
+      return document.getElementById(id).clientWidth;
+    },
     onSwitch(checked) {
       if (checked) {
         this.getData();
@@ -255,19 +264,21 @@ export default {
         }
         for (let j = accounts.length - 1; j >= 0; j--) {
           data0.push({
-            num: "第" + (j + 1) + "投票人",
+            // num: "第" + (j + 1) + "投票人",
+            num: (j + 1).toString().padStart(2, "0"),
             username: username,
             weight: accounts[j].weight
           });
 
           checkData[username].voters.push({
-            num: "第" + (j + 1) + "投票人",
+            num: (j + 1).toString().padStart(2, "0"),
             username: username,
             weight: accounts[j].weight
           });
         }
       }
       this.vdata0.data = data0;
+      this.vdata0.width = document.getElementById("fitsize").clientWidth;
       this.totalDelegates = delegates.length;
       this.hasVotes = hasVotes;
       this.totalVoters = data0.length;
@@ -300,7 +311,7 @@ export default {
   .body-area1 {
     padding-bottom: 20px;
     .chart1 {
-      height: 300px;
+      height: 350px;
       background-color: #fff;
 
       .chart-top {

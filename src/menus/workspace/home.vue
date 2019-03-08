@@ -27,7 +27,9 @@
       <div class="chart-title">
         <h4>出块状态（最近{{barlenght}}块）:</h4>
       </div>
-      <viserbar :vdata="vdata" />
+      <div id="fitsize">
+        <viserbar :vdata="vdata" />
+      </div>
     </div>
   </div>
 </template>
@@ -52,6 +54,7 @@ export default {
       vdata: {
         data: [],
         height: 250,
+        width: 600,
         scale: [
           {
             dataKey: "height",
@@ -157,6 +160,7 @@ export default {
               trs: trs
             });
           }
+          this.vdata.width = document.getElementById("fitsize").clientWidth;
           this.vdata.data = data;
         })
         .catch(() => {});

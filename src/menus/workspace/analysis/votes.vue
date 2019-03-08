@@ -98,6 +98,7 @@ export default {
       vdata0: {
         data: [],
         height: 220,
+        width: 600,
         scale: [
           {
             dataKey: "weight",
@@ -127,6 +128,7 @@ export default {
       vdata1: {
         data: [],
         height: 200,
+        width: 600,
         scale: [
           {
             dataKey: "weight",

@@ -35,19 +35,24 @@
           </div>
           <div class="top-btn">
             <a-button type="primary"
-                      @click="onSend" :disabled="address==''">查询</a-button>
+                      @click="onSend"
+                      :disabled="address==''">查询</a-button>
           </div>
         </div>
         <div class="chart-center">
           <div class="center-pie"
-               v-show="vdata1.data.length>0">
-            所发送交易：
-            <visersecotr :vdata="vdata1" />
+               id="fitsize1">
+            <div v-show="vdata1.data.length>0">
+              所发送交易：
+              <visersecotr :vdata="vdata1" />
+            </div>
           </div>
           <div class="center-pie"
-               v-show="vdata2.data.length>0">
-            所接收交易：
-            <viserpie :vdata="vdata2" />
+               id="fitsize2">
+            <div v-show="vdata2.data.length>0">
+              所接收交易：
+              <viserpie :vdata="vdata2" />
+            </div>
           </div>
         </div>
       </div>
@@ -118,12 +123,14 @@ export default {
         senderId: this.address
       });
       this.sendcount = res1.transactions.length;
+      this.vdata1.width = document.getElementById("fitsize1").clientWidth;
       this.vdata1.data = this.dealTrs(res1.transactions);
 
       let res2 = await server.get("api/transactions", {
         recipientId: this.address
       });
       this.recivecount = res2.transactions.length;
+      this.vdata2.width = document.getElementById("fitsize2").clientWidth;
       this.vdata2.data = this.dealTrs(res2.transactions);
 
       let res3 = await server.get("api/accounts", { address: this.address });

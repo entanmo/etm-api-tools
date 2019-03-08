@@ -51,6 +51,7 @@
           </div>
         </div>
         <div class="chart-center"
+             id="fitsize"
              v-show="!disabled">
           <viserbar :vdata="vdata0" />
           <visersmoothline :vdata="vdata" />
@@ -72,6 +73,7 @@ export default {
       vdata0: {
         data: [],
         height: 250,
+        width: 600,
         scale: [
           {
             dataKey: "time",
@@ -90,6 +92,7 @@ export default {
       vdata: {
         data: [],
         height: 250,
+        width: 600,
         scale: [
           {
             dataKey: "count",
@@ -173,6 +176,8 @@ export default {
           });
         }
       }
+      this.vdata0.width = document.getElementById("fitsize").clientWidth;
+      this.vdata.width = document.getElementById("fitsize").clientWidth;
       this.vdata0.data = timeDate;
 
       let keys = Object.keys(generators);
@@ -218,7 +223,7 @@ export default {
   }
   .body-area {
     .chart {
-      height: 550px;
+      height: 580px;
       background-color: #fff;
 
       .chart-top {

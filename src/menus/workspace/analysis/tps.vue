@@ -63,7 +63,8 @@
             </a-button>
           </div>
         </div>
-        <div class="chart-center">
+        <div class="chart-center"
+             id="fitsize">
           <viserdouble :vdata="vdata" />
         </div>
       </div>
@@ -92,6 +93,7 @@ export default {
       vdata: {
         data: [],
         height: 250,
+        width: 600,
         scale: [
           {
             dataKey: "height",
@@ -219,6 +221,7 @@ export default {
       this.len = len - 1;
       this.totalTrs = totalTrs;
 
+      this.vdata.width = document.getElementById("fitsize").clientWidth;
       this.vdata.data = o_data;
 
       // let message = "TPS统计区块:" + JSON.stringify(useBlocks, null, 2);

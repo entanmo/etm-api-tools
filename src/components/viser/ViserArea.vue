@@ -1,13 +1,15 @@
 <template>
   <div class="chart-content">
-    <v-chart :force-fit="true"
+    <v-chart :force-fit="false"
              :height="vdata.height"
+             :width="vdata.width"
              :data="vdata.data"
              :scale="vdata.scale"
              :padding="{top: 15, right: 50, bottom: 85, left: 50 }">
       <v-tooltip />
       <v-axis />
-      <v-line :position="vdata.axis[0].key+'*'+vdata.axis[1].key" :size="2" />
+      <v-line :position="vdata.axis[0].key+'*'+vdata.axis[1].key"
+              :size="2" />
       <v-area :position="vdata.axis[0].key+'*'+vdata.axis[1].key" />
     </v-chart>
   </div>
