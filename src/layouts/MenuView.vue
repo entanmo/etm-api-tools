@@ -68,6 +68,7 @@ export default {
   },
   watch: {
     $route: function(newRoute, oldRoute) {
+      void oldRoute;
       this.activePage = newRoute.fullPath;
       if (!this.multipage) {
         this.linkList = [newRoute.fullPath];
@@ -81,6 +82,7 @@ export default {
       this.$router.push(key);
     },
     multipage: function(newVal, oldVal) {
+      void oldVal;
       if (!newVal) {
         this.linkList = [this.$route.fullPath];
         this.pageList = [this.$route];

@@ -28,7 +28,8 @@ export default new Vuex.Store({
       multisignatures: {},
       lockvote: {},
       returnMsg: ""
-    }
+    },
+    signed: {}
   },
   mutations: {
     setDevice(state, isMobile) {

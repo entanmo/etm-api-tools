@@ -65,30 +65,61 @@ export default {
       }
     },
     setStoreValue(val) {
-      if (this.$store.state.api[this.modules]) {
-        if (!this.$store.state.api[this.modules][this.item]) {
+      console.log("vvvvvvvvvvvvvvvvalue", val);
+      let paths = this.$route.path.split("/");
+      // 正对已签名交易接口
+      if (paths[3] === "signed") {
+        if (this.$store.state.signed[this.modules]) {
+          if (!this.$store.state.signed[this.modules][this.item]) {
+            this.$store.state.signed[this.modules][this.item] = {};
+          }
+        } else {
+          this.$store.state.signed[this.modules] = {};
+          this.$store.state.signed[this.modules][this.item] = {};
+        }
+
+        if (!val) {
+          delete this.$store.state.signed[this.modules][this.item][this.name];
+        } else {
+          if (integerType.indexOf(this.name) >= 0) {
+            val = parseInt(val);
+          }
+          if (arrayType.indexOf(this.name) >= 0) {
+            try {
+              val = JSON.parse(val);
+            } catch (e) {
+              console.error(e.toString());
+            }
+          }
+          console.log("input:", this.modules, this.item, this.name, val);
+          this.$store.state.signed[this.modules][this.item][this.name] = val;
+        }
+      } else {
+        if (this.$store.state.api[this.modules]) {
+          if (!this.$store.state.api[this.modules][this.item]) {
+            this.$store.state.api[this.modules][this.item] = {};
+          }
+        } else {
+          this.$store.state.api[this.modules] = {};
           this.$store.state.api[this.modules][this.item] = {};
         }
-      } else {
-        this.$store.state.api[this.modules] = {};
-        this.$store.state.api[this.modules][this.item] = {};
-      }
 
-      if (!val) {
-        delete this.$store.state.api[this.modules][this.item][this.name];
-      } else {
-        if (integerType.indexOf(this.name) >= 0) {
-          val = parseInt(val);
-        }
-        if (arrayType.indexOf(this.name) >= 0) {
-          try {
-            val = JSON.parse(val);
-          } catch (e) {
-            console.error(e.toString());
+        if (!val) {
+          delete this.$store.state.api[this.modules][this.item][this.name];
+        } else {
+          if (integerType.indexOf(this.name) >= 0) {
+            val = parseInt(val);
           }
+          if (arrayType.indexOf(this.name) >= 0) {
+            try {
+              val = JSON.parse(val);
+            } catch (e) {
+              console.error(e.toString());
+            }
+          }
+          console.log("input:", this.modules, this.item, this.name, val);
+          this.$store.state.api[this.modules][this.item][this.name] = val;
         }
-        console.log("input:", this.modules, this.item, this.name, val);
-        this.$store.state.api[this.modules][this.item][this.name] = val;
       }
     }
   }

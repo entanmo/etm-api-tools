@@ -150,15 +150,13 @@ export default new Router({
                 {
                   path: "/tools/bulkTrs/bulktransfer",
                   name: "批量转账",
-                  component: () =>
-                    import("@/menus/tools/bulkTrs/bulkTransfer"),
+                  component: () => import("@/menus/tools/bulkTrs/bulkTransfer"),
                   icon: "none"
                 },
                 {
                   path: "/tools/bulkTrs/bulkdelegate",
                   name: "批量代理",
-                  component: () =>
-                    import("@/menus/tools/bulkTrs/bulkDelegate"),
+                  component: () => import("@/menus/tools/bulkTrs/bulkDelegate"),
                   icon: "none"
                 },
                 {
@@ -365,6 +363,12 @@ export default new Router({
                   name: "延迟到账交易",
                   icon: "none",
                   component: () => import("@/menus/api/transactions/delay")
+                },
+                {
+                  path: "/api/transactions/signed",
+                  name: "已签名交易",
+                  icon: "none",
+                  component: () => import("@/menus/api/transactions/signed")
                 }
               ]
             },

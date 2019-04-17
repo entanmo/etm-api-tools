@@ -749,6 +749,34 @@ let data = {
       ],
       reqExample: {},
       resExample: {}
+    },
+    signed: {
+      name: "已签名交易",
+      uri: "/api/transactions/signed",
+      method: "put",
+      remark: "",
+      req: [
+        {
+          name: "transactions",
+          type: "array",
+          isRequired: true,
+          desc: "已签名的交易数组"
+        }
+      ],
+      res: [
+        {
+          name: "success",
+          type: "bool",
+          desc: "请求是否成功"
+        },
+        {
+          name: "transactions",
+          type: "array",
+          desc: "所有交易"
+        }
+      ],
+      reqExample: {},
+      resExample: {}
     }
   },
   blocks: {
@@ -1671,7 +1699,7 @@ let data = {
         {
           name: "transactionId",
           type: "string",
-          isRequired: false,
+          isRequired: true,
           desc: "交易id"
         }
       ],
@@ -1754,7 +1782,7 @@ let data = {
           name: "args",
           type: "array",
           isRequired: true,
-          desc: "包含锁仓金额的数组，如:*[1000]"
+          desc: "包含锁仓金额的数组，如:*['1000']"
         }
       ],
       res: [
@@ -1912,7 +1940,7 @@ let data = {
           name: "args",
           type: "array",
           isRequired: true,
-          desc: "包含锁仓金额的数组，如:*[1000]"
+          desc: "包含锁仓交易的id列表，如：*[id1, id2, id3]*"
         }
       ],
       res: [
