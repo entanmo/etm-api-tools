@@ -33,11 +33,12 @@ let Utils = {
   },
 
   getAddressBySecret(secret) {
-    "secret", console.log(secret);
-    let publicKey = etmjslib.utils.ed.MakeKeypair(secret).publicKey;
-    console.log("publicKey", publicKey.toString());
+    let hash = etmjslib.crypto
+      .createHash("sha256")
+      .update(secret)
+      .digest();
+    let publicKey = etmjslib.utils.ed.MakeKeypair(hash).publicKey;
     let address = etmjslib.utils.address.generateBase58CheckAddress(publicKey);
-    console.log("address", address);
 
     return address;
   },

@@ -167,7 +167,7 @@ export default {
         publicKey: keypair.publicKey.toString("hex")
       };
       data.keypair = keypair;
-      console.log("================", data);
+
       if (data.secondSecret) {
         let secondHash = etmjslib.crypto
           .createHash("sha256")
