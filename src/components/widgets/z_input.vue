@@ -86,7 +86,7 @@ export default {
           }
           if (arrayType.indexOf(this.name) >= 0) {
             try {
-              val = JSON.parse(val);
+              val = JSON.parse(val.replace(/'/g, `"`));
             } catch (e) {
               console.error(e.toString());
             }
@@ -112,7 +112,7 @@ export default {
           }
           if (arrayType.indexOf(this.name) >= 0) {
             try {
-              val = JSON.parse(val);
+              val = JSON.parse(val.replace(/'/g, `"`));
             } catch (e) {
               console.error(e.toString());
             }

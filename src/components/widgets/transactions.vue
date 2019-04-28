@@ -151,7 +151,7 @@ export default {
       this.trs.push(tr);
       this.value = JSON.stringify(this.trs);
 
-      this.setStoreValue(JSON.parse(this.value || null));
+      this.setStoreValue(JSON.parse(this.value.replace(/'/g, `"`) || null));
     },
     clearTrs() {
       this.value = "";
