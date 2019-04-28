@@ -114,7 +114,7 @@ export default {
   methods: {
     onChange(e) {
       if (e.type && e.type === "change") {
-        this.setStoreValue(JSON.parse(this.value || null));
+        this.setStoreValue(JSON.parse(this.value.replace(/'/g, `"`) || null));
       }
     },
     setStoreValue(val) {

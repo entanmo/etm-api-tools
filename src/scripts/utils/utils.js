@@ -1,4 +1,5 @@
-import etmjs from "etm-js";
+// import etmjs from "etm-js";
+import etmjslib from "etm-js-lib";
 import config from "@/assets/ipconfig";
 
 let Utils = {
@@ -23,7 +24,8 @@ let Utils = {
 
   // new Date(Date.UTC(2018, 9, 12, 12, 0, 0, 0));
   convertTimeToLocal(timestamp) {
-    return new Date(etmjs.transaction.getTime(timestamp)).toLocaleDateString();
+    let localTime = etmjslib.utils.slots.getRealTime(timestamp);
+    return new Date(localTime).toLocaleDateString();
   },
 
   convertTimeToUTC(time) {
@@ -32,16 +34,16 @@ let Utils = {
 
   getAddressBySecret(secret) {
     "secret", console.log(secret);
-    let publicKey = etmjs.crypto.getKeys(secret).publicKey;
+    let publicKey = etmjslib.utils.ed.MakeKeypair(secret).publicKey;
     console.log("publicKey", publicKey.toString());
-    let address = etmjs.crypto.getAddress(publicKey);
+    let address = etmjslib.utils.address.generateBase58CheckAddress(publicKey);
     console.log("address", address);
 
     return address;
   },
 
   getAddress(publicKey) {
-    let address = etmjs.crypto.getNewAddress(publicKey);
+    let address = etmjslib.utils.address.generateBase58CheckAddress(publicKey);
 
     return address;
   },
