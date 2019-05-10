@@ -158,7 +158,7 @@ export default {
       this.trs = [];
     },
     generateTr(type, data) {
-      let hash = etmjslib.crypto
+      let hash = etmjslib.lib.crypto
         .createHash("sha256")
         .update(data.secret, "utf8")
         .digest();
@@ -169,7 +169,7 @@ export default {
       data.keypair = keypair;
 
       if (data.secondSecret) {
-        let secondHash = etmjslib.crypto
+        let secondHash = etmjslib.lib.crypto
           .createHash("sha256")
           .update(data.secondSecret, "utf8")
           .digest();
