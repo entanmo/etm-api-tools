@@ -53,11 +53,10 @@
           </span>
         </template>
 
-        <template slot="expandedRowRender" slot-scope="record,index">
+        <template slot="expandedRowRender" slot-scope="record,index" v-if="record.type===0">
           <!-- 二级表格 -->
           <a-table
             class="sub-table"
-            v-if="record.type===0"
             :columns="innerColumns"
             :dataSource="record.delegates"
             :pagination="false"
@@ -183,7 +182,7 @@ const innerColumns = [
   { title: "最后出块时间", dataIndex: "blockTimestamp", key: "blockTimestamp" },
   { title: "操作", key: "action", scopedSlots: { customRender: "operation" } }
 ];
-let _this;
+
 export default {
   data() {
     return {
@@ -195,73 +194,49 @@ export default {
   },
   components: {},
   sockets: {
-    "height/update": res => {
-      if (_this.data.length > 0) {
-        let index = _this.data.findIndex(item => {
-          // console.log(item.id, res.id);
+    "node/add": function(res) {
+      this.getAllData();
+    },
+    "node/remove": function(res) {
+      this.getAllData();
+    },
+    "delegate/add": function(res) {
+      this.getAllData();
+    },
+    "delegate/remove": function(res) {
+      this.getAllData();
+    },
+    "node/update": function(res) {
+      this.getAllData();
+    },
+    "delegate/update": function(res) {
+      this.getAllData();
+    },
+    "height/update": function(res){
+      if (this.data.length > 0) {
+        let index = this.data.findIndex(item => {
           return item.id === res.id;
         });
         if (index >= 0) {
-          _this.data[index].lastestHeight = res.lastestHeight;
+          this.data[index].lastestHeight = res.lastestHeight;
         }
       }
+      // this.getAllData();
     },
-    "node/update": res => {
-      // console.log("node/update", res);
-    },
-    "delegate/update": res => {
-      // console.log("delegate/update", res);
-    },
-    "status/update": res => {
-      // console.log("status/update", res);
+    "status/update": function(res) {
+       if (this.data.length > 0) {
+        let index = this.data.findIndex(item => {
+          return item.id === res.id;
+        });
+        if (index >= 0) {
+          this.data[index].status = res.status;
+        }
+      }
+      // this.getAllData();
     }
   },
   created() {
-    _this = this;
-    monitor
-      .get("/api/chain/all", { withDelegates: true })
-      .then(res => {
-        console.log(res);
-        if (res.success) {
-          // this.data = res.data;
-          let dataArr = [];
-          for (let i = 0; i < res.data.length; i++) {
-            let miner = res.data[i];
-            let delegatesArr = [];
-            for (let j = 0; j < miner.delegates.length; j++) {
-              let delegate = miner.delegates[j];
-              delegatesArr.push({
-                // id: delegate.id,
-                name: delegate.name,
-                address: delegate.address,
-                publicKey: delegate.publicKey,
-                blockHeight: delegate.blockHeight,
-                blockTimestamp: delegate.blockTimestamp,
-                isEdit: false,
-                isNew: false
-              });
-            }
-
-            dataArr.push({
-              id: miner.id,
-              name: miner.name,
-              ip: miner.ip,
-              port: miner.port,
-              type: miner.type,
-              status: miner.status,
-              lastestHeight: miner.lastestHeight,
-              blockTimestamp: miner.blockTimestamp,
-              delegates: delegatesArr,
-              isEdit: false,
-              isNew: false
-            });
-          }
-          this.data = dataArr;
-        }
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    this.getAllData();
   },
   methods: {
     handleChange(value, id, column) {
@@ -425,6 +400,53 @@ export default {
         item => item.publicKey === record.publicKey
       )[0];
       target.isEdit = false;
+    },
+
+    getAllData() {
+      monitor
+        .get("/api/chain/all", { withDelegates: true })
+        .then(res => {
+          // console.log(res);
+          if (res.success) {
+            // this.data = res.data;
+            let dataArr = [];
+            for (let i = 0; i < res.data.length; i++) {
+              let miner = res.data[i];
+              let delegatesArr = [];
+              for (let j = 0; j < miner.delegates.length; j++) {
+                let delegate = miner.delegates[j];
+                delegatesArr.push({
+                  // id: delegate.id,
+                  name: delegate.name,
+                  address: delegate.address,
+                  publicKey: delegate.publicKey,
+                  blockHeight: delegate.blockHeight,
+                  blockTimestamp: delegate.blockTimestamp,
+                  isEdit: false,
+                  isNew: false
+                });
+              }
+
+              dataArr.push({
+                id: miner.id,
+                name: miner.name,
+                ip: miner.ip,
+                port: miner.port,
+                type: miner.type,
+                status: miner.status,
+                lastestHeight: miner.lastestHeight,
+                blockTimestamp: miner.blockTimestamp,
+                delegates: delegatesArr,
+                isEdit: false,
+                isNew: false
+              });
+            }
+            this.data = dataArr;
+          }
+        })
+        .catch(err => {
+          console.log(err);
+        });
     }
   }
 };
