@@ -29,6 +29,26 @@ export default new Router({
               icon: "home"
             },
             {
+              path: "/workspace/monitor",
+              name: "监控页",
+              component: RouteView,
+              icon: "file-done",
+              children: [
+                {
+                  path: "/workspace/monitor/node",
+                  name: "节点监控",
+                  component: () => import("@/menus/workspace/monitor/node"),
+                  icon: "none"
+                },
+                {
+                  path: "/workspace/monitor/configure",
+                  name: "节点配置",
+                  component: () => import("@/menus/workspace/monitor/configure"),
+                  icon: "none"
+                }
+              ]
+            },
+            {
               path: "/workspace/analysis",
               name: "分析页",
               component: RouteView,

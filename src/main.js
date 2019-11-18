@@ -9,14 +9,16 @@ import Antd from "ant-design-vue";
 import "ant-design-vue/dist/antd.css";
 import utils from "@/scripts/utils/utils.js";
 
+Vue.prototype.$utils = utils;
 Vue.prototype.$axios = axios;
 Vue.config.productionTip = false;
 
-let url = utils.getUrl();
+// let url = utils.getUrl();
 Vue.use(
   new VueSocketIO({
     debug: false,
-    connection: url.type + url.ip
+    // connection: url.type + url.ip
+    connection: "http://47.110.42.170:5060"
   })
 );
 

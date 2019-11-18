@@ -91,10 +91,15 @@ export default {
     viserbar
   },
   sockets: {
-    "blocks/change": function() {
+    "height/update": function() {
       this.getHeight();
     }
   },
+  // created(){
+  //   setTimeout(()=>{
+  //     this.getHeight();
+  //   },3000)
+  // },
   methods: {
     getHeight() {
       let server = new Server();
