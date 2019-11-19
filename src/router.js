@@ -43,7 +43,8 @@ export default new Router({
                 {
                   path: "/workspace/monitor/configure",
                   name: "节点配置",
-                  component: () => import("@/menus/workspace/monitor/configure"),
+                  component: () =>
+                    import("@/menus/workspace/monitor/configure"),
                   icon: "none"
                 }
               ]

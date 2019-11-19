@@ -55,7 +55,7 @@
                 </div>
                 <div class="entry">
                   <div class="entry-title">最后出块时间</div>
-                  <div class="entry-text">{{timestampToTime(item.blockDate)}}</div>
+                  <div class="entry-text">{{$utils.timestampToTime(item.blockDate)}}</div>
                 </div>
 
                 <a-divider class="delegate" orientation="left">代理人</a-divider>
@@ -65,7 +65,7 @@
                     <div class="entry-title">{{v.name}}</div>
                     <div
                       :class="[v.address == item.address?'active':'entry-text']"
-                    >{{timestampToTime(v.blockDate)}}</div>
+                    >{{$utils.timestampToTime(v.blockDate)}}</div>
                   </div>
                 </div>
               </div>
@@ -109,10 +109,6 @@
                   <div class="entry-title">最新区块高度</div>
                   <div class="entry-text">{{item.lastestHeight}}</div>
                 </div>
-                <div class="entry">
-                  <div class="entry-title">最后出块时间</div>
-                  <div class="entry-text">{{timestampToTime(item.blockDate)}}</div>
-                </div>
               </div>
             </a-collapse-panel>
           </a-collapse>
@@ -154,10 +150,6 @@
                   <div class="entry-title">最新区块高度</div>
                   <div class="entry-text">{{item.lastestHeight}}</div>
                 </div>
-                <div class="entry">
-                  <div class="entry-title">最后出块时间</div>
-                  <div class="entry-text">{{timestampToTime(item.blockDate)}}</div>
-                </div>
               </div>
             </a-collapse-panel>
           </a-collapse>
@@ -191,16 +183,16 @@ export default {
     this.getAllData();
   },
   sockets: {
-    "node/add": function(res) {
+    "node/add": function() {
       this.getAllData();
     },
-    "node/remove": function(res) {
+    "node/remove": function() {
       this.getAllData();
     },
-    "delegate/add": function(res) {
+    "delegate/add": function() {
       this.getAllData();
     },
-    "delegate/remove": function(res) {
+    "delegate/remove": function() {
       this.getAllData();
     },
     "height/update": function(res) {
@@ -211,33 +203,18 @@ export default {
 
       this.getAllData();
     },
-    "node/update": function(res) {
+    "node/update": function() {
       this.getAllData();
     },
-    "delegate/update": function(res) {
+    "delegate/update": function() {
       this.getAllData();
     },
-    "status/update": function(res) {
+    "status/update": function() {
       this.getAllData();
     }
   },
   methods: {
-    changeActivekey(key) {
-      // console.log(key);
-    },
-    timestampToTime(timestamp) {
-      var date = new Date(timestamp); //时间戳为10位需*1000，时间戳为13位的话不需乘1000
-      var Y = date.getFullYear() + "-";
-      var M =
-        (date.getMonth() + 1 < 10
-          ? "0" + (date.getMonth() + 1)
-          : date.getMonth() + 1) + "-";
-      var D = date.getDate() + " ";
-      var h = date.getHours() + ":";
-      var m = date.getMinutes() + ":";
-      var s = date.getSeconds();
-      return Y + M + D + h + m + s;
-    },
+    changeActivekey() {},
     getAllData() {
       monitor
         .get("/api/chain/all", { withDelegates: true })

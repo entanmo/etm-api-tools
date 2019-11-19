@@ -146,7 +146,7 @@ const columns = [
     title: "状态",
     dataIndex: "status",
     key: "status",
-    width: "8%",
+    width: "100px",
     scopedSlots: { customRender: "status" }
   },
   {
@@ -194,25 +194,49 @@ export default {
   },
   components: {},
   sockets: {
-    "node/add": function(res) {
+    "node/add": function() {
       this.getAllData();
     },
-    "node/remove": function(res) {
+    "node/remove": function() {
       this.getAllData();
     },
-    "delegate/add": function(res) {
+    "delegate/add": function() {
       this.getAllData();
     },
-    "delegate/remove": function(res) {
+    "delegate/remove": function() {
       this.getAllData();
     },
     "node/update": function(res) {
-      this.getAllData();
+      if (this.data.length > 0) {
+        let index = this.data.findIndex(item => {
+          return item.id === res.id;
+        });
+        if (index >= 0) {
+          this.data[index].blockDate = res.blockDate;
+          this.data[index].blockHeight = res.blockHeight;
+          this.data[index].blockId = res.blockId;
+          this.data[index].blockTimestamp = res.blockTimestamp;
+          this.data[index].generatorAddress = res.generatorAddress;
+          this.data[index].generatorPublicKey = res.generatorPublicKey;
+        }
+      }
     },
     "delegate/update": function(res) {
-      this.getAllData();
+      if (this.data.length > 0) {
+        let index = this.data.findIndex(item => {
+          return item.id === res.id;
+        });
+        if (index >= 0 && this.data[index].delegates.length > 0) {
+          let index2 = this.data[index].delegates.findIndex(item2 => {
+            return item2.address === res.address;
+          });
+          this.data[index].delegates[index2].blockHeight = res.blockHeight;
+          this.data[index].delegates[index2].blockTimestamp =
+            res.blockTimestamp;
+        }
+      }
     },
-    "height/update": function(res){
+    "height/update": function(res) {
       if (this.data.length > 0) {
         let index = this.data.findIndex(item => {
           return item.id === res.id;
@@ -221,10 +245,9 @@ export default {
           this.data[index].lastestHeight = res.lastestHeight;
         }
       }
-      // this.getAllData();
     },
     "status/update": function(res) {
-       if (this.data.length > 0) {
+      if (this.data.length > 0) {
         let index = this.data.findIndex(item => {
           return item.id === res.id;
         });
@@ -232,7 +255,6 @@ export default {
           this.data[index].status = res.status;
         }
       }
-      // this.getAllData();
     }
   },
   created() {
@@ -327,9 +349,7 @@ export default {
       }
     },
     inner_create(index) {
-      const length = this.data[index].delegates.length;
       this.data[index].delegates.push({
-        // id: length === 0 ? "1" : (length + 1).toString(),
         name: "",
         publicKey: "",
         isEdit: true,
@@ -408,7 +428,6 @@ export default {
         .then(res => {
           // console.log(res);
           if (res.success) {
-            // this.data = res.data;
             let dataArr = [];
             for (let i = 0; i < res.data.length; i++) {
               let miner = res.data[i];
@@ -416,12 +435,14 @@ export default {
               for (let j = 0; j < miner.delegates.length; j++) {
                 let delegate = miner.delegates[j];
                 delegatesArr.push({
-                  // id: delegate.id,
+                  id: delegate.id,
                   name: delegate.name,
                   address: delegate.address,
                   publicKey: delegate.publicKey,
+                  blockId: delegate.blockId,
                   blockHeight: delegate.blockHeight,
                   blockTimestamp: delegate.blockTimestamp,
+                  blockDate: this.$utils.timestampToTime(miner.blockDate),
                   isEdit: false,
                   isNew: false
                 });
@@ -434,8 +455,15 @@ export default {
                 port: miner.port,
                 type: miner.type,
                 status: miner.status,
+                blockId: miner.blockId,
                 lastestHeight: miner.lastestHeight,
                 blockTimestamp: miner.blockTimestamp,
+                blockDate:
+                  miner.type === 0
+                    ? this.$utils.timestampToTime(miner.blockDate)
+                    : "--",
+                generatorPublicKey: miner.generatorPublicKey,
+                generatorAddress: miner.generatorAddress,
                 delegates: delegatesArr,
                 isEdit: false,
                 isNew: false
