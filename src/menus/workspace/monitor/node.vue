@@ -234,6 +234,7 @@ export default {
       if (res.lastestHeight > this.height) {
         this.height = res.lastestHeight;
       }
+      
       if (res.type === 0) {
         if (this.miner.length > 0) {
           let index = this.miner.findIndex(item => {
@@ -265,13 +266,105 @@ export default {
 
       // this.getAllData();
     },
-    "node/update": function() {
+    "node/update": function(res) {
       // console.log("node/update")
-      this.getAllData();
+      if (res.type === 0) {
+        if (this.miner.length > 0) {
+          let index = this.miner.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.miner[index].blockDate = res.blockDate;
+            this.miner[index].blockHeight = res.blockHeight;
+            this.miner[index].blockId = res.blockId;
+            this.miner[index].blockTimestamp = res.blockTimestamp;
+            this.miner[index].generatorAddress = res.generatorAddress;
+            this.miner[index].generatorPublicKey = res.generatorPublicKey;
+          }
+        }
+      } else if (res.type === 1) {
+        if (this.seed.length > 0) {
+          let index = this.seed.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.seed[index].blockDate = res.blockDate;
+            this.seed[index].blockHeight = res.blockHeight;
+            this.seed[index].blockId = res.blockId;
+            this.seed[index].blockTimestamp = res.blockTimestamp;
+            this.seed[index].generatorAddress = res.generatorAddress;
+            this.seed[index].generatorPublicKey = res.generatorPublicKey;
+          }
+        }
+      } else if (res.type === 2) {
+        if (this.wallet.length > 0) {
+          let index = this.wallet.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.seed[index].blockDate = res.blockDate;
+            this.seed[index].blockHeight = res.blockHeight;
+            this.seed[index].blockId = res.blockId;
+            this.seed[index].blockTimestamp = res.blockTimestamp;
+            this.seed[index].generatorAddress = res.generatorAddress;
+            this.seed[index].generatorPublicKey = res.generatorPublicKey;
+          }
+        }
+      }
+      // this.getAllData();
     },
-    "delegate/update": function() {
+    "delegate/update": function(res) {
       // console.log("delegate/update")
-      this.getAllData();
+      if (res.type === 0) {
+        if (this.miner.length > 0) {
+          let index = this.miner.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0 && this.miner[index].delegates.length > 0) {
+            let index2 = this.miner[index].delegates.findIndex(item2 => {
+              return item2.address === res.address;
+            });
+            this.miner[index].delegates[index2].blockId = res.blockId;
+            this.miner[index].delegates[index2].blockHeight = res.blockHeight;
+            this.miner[index].delegates[index2].blockDate = res.blockDate;
+            this.miner[index].delegates[index2].blockTimestamp =
+              res.blockTimestamp;
+          }
+        }
+      } else if (res.type === 1) {
+        if (this.seed.length > 0) {
+          let index = this.seed.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0 && this.seed[index].delegates.length > 0) {
+            let index2 = this.seed[index].delegates.findIndex(item2 => {
+              return item2.address === res.address;
+            });
+            this.seed[index].delegates[index2].blockId = res.blockId;
+            this.seed[index].delegates[index2].blockHeight = res.blockHeight;
+            this.seed[index].delegates[index2].blockDate = res.blockDate;
+            this.seed[index].delegates[index2].blockTimestamp =
+              res.blockTimestamp;
+          }
+        }
+      } else if (res.type === 2) {
+        if (this.wallet.length > 0) {
+          let index = this.wallet.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0 && this.wallet[index].delegates.length > 0) {
+            let index2 = this.wallet[index].delegates.findIndex(item2 => {
+              return item2.address === res.address;
+            });
+            this.wallet[index].delegates[index2].blockId = res.blockId;
+            this.wallet[index].delegates[index2].blockHeight = res.blockHeight;
+            this.wallet[index].delegates[index2].blockDate = res.blockDate;
+            this.wallet[index].delegates[index2].blockTimestamp =
+              res.blockTimestamp;
+          }
+        }
+      }
+      // this.getAllData();
     },
     "status/update": function(res) {
       // console.log("status/update")
