@@ -66,23 +66,23 @@ const columns = [
     title: "接收者",
     dataIndex: "name",
     key: "name",
-    width: "20%",
+    width: "30%",
     scopedSlots: { customRender: "name" }
   },
   {
     title: "邮箱",
     dataIndex: "mail",
     key: "mail",
-    width: "25%",
+    width: "40%",
     scopedSlots: { customRender: "mail" }
   },
-  {
-    title: "电话",
-    dataIndex: "phone",
-    key: "phone",
-    width: "15%",
-    scopedSlots: { customRender: "phone" }
-  },
+  // {
+  //   title: "电话",
+  //   dataIndex: "phone",
+  //   key: "phone",
+  //   width: "15%",
+  //   scopedSlots: { customRender: "phone" }
+  // },
   // {
   //   title: "状态",
   //   dataIndex: "status",
@@ -110,7 +110,6 @@ export default {
   },
   methods: {
     changeRun(checked) {
-      // console.log("changeRun", checked);
       this.isRun = checked;
       if (checked) {
         monitor
@@ -213,7 +212,6 @@ export default {
       monitor
         .get("/api/chain/mail/isrunning")
         .then(res => {
-          // console.log("checkRunning", res);
           if (res.success) {
             this.isRun = res.data;
           }
@@ -227,7 +225,6 @@ export default {
       monitor
         .get("/api/chain/mail/all")
         .then(res => {
-          // console.log("getAllData", res);
           if (res.success) {
             let dataArr = [];
             for (let i = 0; i < res.data.length; i++) {
