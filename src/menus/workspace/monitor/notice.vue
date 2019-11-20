@@ -103,7 +103,11 @@ export default {
     };
   },
   components: {},
-  sockets: {},
+  sockets: {
+    "mail/notify": function(res) {
+      this.$message.warning(res, 100);
+    }
+  },
   created() {
     this.checkRunning();
     this.getAllData();
@@ -131,7 +135,7 @@ export default {
           });
       }
     },
-    onChange(checked) {},
+    onChange() {},
     handleChange(value, id, column) {
       const newData = [...this.data];
       const target = newData.filter(item => id === item.id)[0];
@@ -158,7 +162,7 @@ export default {
     },
     save(record) {
       this.memberLoading = true;
-      const { id, name, mail, phone, status } = record;
+      const { id, name, mail } = record;
       if (!name || !mail) {
         this.memberLoading = false;
         this.$message.error("请填写完整节点信息。");
@@ -168,8 +172,7 @@ export default {
       monitor
         .post("/api/chain/mail/add", {
           name,
-          address: mail,
-          phone
+          address: mail
         })
         .then(res => {
           // console.log("add", res);
