@@ -160,7 +160,7 @@ export default {
     save(record) {
       this.memberLoading = true;
       const { id, name, mail, phone, status } = record;
-      if (!name || !mail || [0, 1, "0", "1"].indexOf(status) < 0) {
+      if (!name || !mail) {
         this.memberLoading = false;
         this.$message.error("请填写完整节点信息。");
         return;
