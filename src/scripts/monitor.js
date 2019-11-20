@@ -4,7 +4,7 @@ class Monitor {
   constructor() {
     this.$ajax = Axios.create({
       baseURL: "http://47.110.42.170:5060",
-      timeout: "6000",
+      timeout: "30000",
       headers: {
         "X-Custom-Header": "foobar"
       }
@@ -21,7 +21,7 @@ class Monitor {
           return resolve(res.data);
         })
         .catch(res => {
-          return reject(res.data);
+          return reject(res);
         });
     });
   }

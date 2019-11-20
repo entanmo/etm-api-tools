@@ -214,33 +214,96 @@ export default {
   },
   sockets: {
     "node/add": function() {
+      // console.log("node/add")
       this.getAllData();
     },
     "node/remove": function() {
+      // console.log("node/remove")
       this.getAllData();
     },
     "delegate/add": function() {
+      // console.log("delegate/add")
       this.getAllData();
     },
     "delegate/remove": function() {
+      // console.log("delegate/remove")
       this.getAllData();
     },
     "height/update": function(res) {
-      // console.log(res)
+      // console.log("height/update", res);
       if (res.lastestHeight > this.height) {
         this.height = res.lastestHeight;
       }
+      if (res.type === 0) {
+        if (this.miner.length > 0) {
+          let index = this.miner.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.miner[index].lastestHeight = res.lastestHeight;
+          }
+        }
+      } else if (res.type === 1) {
+        if (this.seed.length > 0) {
+          let index = this.seed.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.seed[index].lastestHeight = res.lastestHeight;
+          }
+        }
+      } else if (res.type === 2) {
+        if (this.wallet.length > 0) {
+          let index = this.wallet.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.wallet[index].lastestHeight = res.lastestHeight;
+          }
+        }
+      }
 
-      this.getAllData();
+      // this.getAllData();
     },
     "node/update": function() {
+      // console.log("node/update")
       this.getAllData();
     },
     "delegate/update": function() {
+      // console.log("delegate/update")
       this.getAllData();
     },
-    "status/update": function() {
-      this.getAllData();
+    "status/update": function(res) {
+      // console.log("status/update")
+      if (res.type === 0) {
+        if (this.miner.length > 0) {
+          let index = this.miner.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.miner[index].status = res.status;
+          }
+        }
+      } else if (res.type === 1) {
+        if (this.seed.length > 0) {
+          let index = this.seed.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.seed[index].status = res.status;
+          }
+        }
+      } else if (res.type === 2) {
+        if (this.wallet.length > 0) {
+          let index = this.wallet.findIndex(item => {
+            return item.id === res.id;
+          });
+          if (index >= 0) {
+            this.wallet[index].status = res.status;
+          }
+        }
+      }
+      // this.getAllData();
     }
   },
   methods: {
