@@ -26,8 +26,18 @@
             <a-collapse-panel>
               <template slot="header">
                 <span>{{item.name||item.ip}}</span>
-                <a-badge class="status" status="success" v-if="item.status===0" text="正常" />
-                <a-badge class="status" status="warning" v-else-if="item.status===1" text="更新中" />
+                <a-badge
+                  class="status"
+                  status="success"
+                  v-if="parseInt(item.status)===0"
+                  text="正常"
+                />
+                <a-badge
+                  class="status"
+                  status="warning"
+                  v-else-if="parseInt(item.status)===1"
+                  text="更新中"
+                />
                 <a-badge class="status" status="error" v-else text="异常" />
               </template>
 
@@ -39,11 +49,16 @@
                 <div class="entry">
                   <div class="entry-title">状态</div>
                   <div class="entry-text">
-                    <a-badge class="status" status="success" v-if="item.status===0" text="正常" />
+                    <a-badge
+                      class="status"
+                      status="success"
+                      v-if="parseInt(item.status)===0"
+                      text="正常"
+                    />
                     <a-badge
                       class="status"
                       status="warning"
-                      v-else-if="item.status===1"
+                      v-else-if="parseInt(item.status)===1"
                       text="更新中"
                     />
                     <a-badge class="status" status="error" v-else text="异常" />
@@ -82,8 +97,18 @@
             <a-collapse-panel>
               <template slot="header">
                 <span>{{item.name||item.ip}}</span>
-                <a-badge class="status" status="success" v-if="item.status===0" text="正常" />
-                <a-badge class="status" status="warning" v-else-if="item.status===1" text="更新中" />
+                <a-badge
+                  class="status"
+                  status="success"
+                  v-if="parseInt(item.status)===0"
+                  text="正常"
+                />
+                <a-badge
+                  class="status"
+                  status="warning"
+                  v-else-if="parseInt(item.status)===1"
+                  text="更新中"
+                />
                 <a-badge class="status" status="error" v-else text="异常" />
               </template>
 
@@ -95,11 +120,16 @@
                 <div class="entry">
                   <div class="entry-title">状态</div>
                   <div class="entry-text">
-                    <a-badge class="status" status="success" v-if="item.status===0" text="正常" />
+                    <a-badge
+                      class="status"
+                      status="success"
+                      v-if="parseInt(item.status)===0"
+                      text="正常"
+                    />
                     <a-badge
                       class="status"
                       status="warning"
-                      v-else-if="item.status===1"
+                      v-else-if="parseInt(item.status)===1"
                       text="更新中"
                     />
                     <a-badge class="status" status="error" v-else text="异常" />

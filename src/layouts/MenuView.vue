@@ -1,31 +1,33 @@
 <template>
   <global-layout>
-    <contextmenu :itemList="menuItemList"
-                 :visible.sync="menuVisible"
-                 @select="onMenuSelect" />
-    <a-tabs @contextmenu.native="e => onContextmenu(e)"
-            v-if="multipage"
-            :active-key="activePage"
-            style="margin-top: -8px; margin-bottom: 8px"
-            :hide-add="true"
-            type="editable-card"
-            @change="changePage"
-            @edit="editPage">
-      <a-tab-pane :id="page.fullPath"
-                  :key="page.fullPath"
-                  v-for="page in pageList">
-        <span slot="tab"
-              :pagekey="page.fullPath">{{page.name}}</span>
-        <WrapperTop v-show="page.fullPath.indexOf('api')>0" />
+    <contextmenu :itemList="menuItemList" :visible.sync="menuVisible" @select="onMenuSelect" />
+    <a-tabs
+      @contextmenu.native="e => onContextmenu(e)"
+      v-if="multipage"
+      :active-key="activePage"
+      style="margin-top: -8px; margin-bottom: 8px"
+      :hide-add="true"
+      type="editable-card"
+      @change="changePage"
+      @edit="editPage"
+    >
+      <a-tab-pane :id="page.fullPath" :key="page.fullPath" v-for="page in pageList">
+        <span slot="tab" :pagekey="page.fullPath">{{page.name}}</span>
+
+        <WrapperTop v-if="page.fullPath.indexOf('api')>0" />
+
+        <div class="page-content">
+          <transition name="page-toggle">
+            <keep-alive v-if="multipage">
+              <router-view />
+            </keep-alive>
+            <router-view v-else />
+          </transition>
+
+          <WrapperBottom v-if="page.fullPath.indexOf('api')>0" />
+        </div>
       </a-tab-pane>
     </a-tabs>
-    <transition name="page-toggle">
-      <keep-alive v-if="multipage">
-        <router-view />
-      </keep-alive>
-      <router-view v-else />
-    </transition>
-    <WrapperBottom />
   </global-layout>
 </template>
 
@@ -182,5 +184,10 @@ export default {
 };
 </script>
 
-<style scoped>
+<style lang="less" scoped>
+.page-content {
+  margin-top: 10px;
+  max-height: calc(100vh - 200px);
+  overflow-y: scroll;
+}
 </style>

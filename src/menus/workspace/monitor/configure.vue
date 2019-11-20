@@ -24,8 +24,8 @@
         </template>
 
         <span slot="status" slot-scope="text, record" v-show="!record.isNew">
-          <a-badge status="success" v-if="record.status===0" text="正常" />
-          <a-badge status="warning" v-else-if="record.status===1" text="更新中" />
+          <a-badge status="success" v-if="parseInt(record.status)===0" text="正常" />
+          <a-badge status="warning" v-else-if="parseInt(record.status)===1" text="更新中" />
           <a-badge status="error" v-else text="异常" />
         </span>
 
@@ -53,7 +53,11 @@
           </span>
         </template>
 
-        <template slot="expandedRowRender" slot-scope="record,index" v-if="record.type===0">
+        <template
+          slot="expandedRowRender"
+          slot-scope="record,index"
+          v-if="parseInt(record.type)===0"
+        >
           <!-- 二级表格 -->
           <a-table
             class="sub-table"
@@ -158,10 +162,10 @@ const columns = [
   },
   {
     title: "最后出块时间",
-    dataIndex: "blockTimestamp",
-    key: "blockTimestamp",
+    dataIndex: "blockDate",
+    key: "blockDate",
     width: "18%",
-    scopedSlots: { customRender: "blockTimestamp" }
+    scopedSlots: { customRender: "blockDate" }
   },
   { title: "操作", key: "action", scopedSlots: { customRender: "operation" } }
 ];
@@ -179,7 +183,7 @@ const innerColumns = [
     scopedSlots: { customRender: "publicKey" }
   },
   { title: "最后出块高度", dataIndex: "blockHeight", key: "blockHeight" },
-  { title: "最后出块时间", dataIndex: "blockTimestamp", key: "blockTimestamp" },
+  { title: "最后出块时间", dataIndex: "blockDate", key: "blockDate" },
   { title: "操作", key: "action", scopedSlots: { customRender: "operation" } }
 ];
 
@@ -212,7 +216,9 @@ export default {
           return item.id === res.id;
         });
         if (index >= 0) {
-          this.data[index].blockDate = res.blockDate;
+          this.data[index].blockDate = this.$utils.timestampToTime(
+            res.blockDate
+          );
           this.data[index].blockHeight = res.blockHeight;
           this.data[index].blockId = res.blockId;
           this.data[index].blockTimestamp = res.blockTimestamp;
@@ -230,7 +236,11 @@ export default {
           let index2 = this.data[index].delegates.findIndex(item2 => {
             return item2.address === res.address;
           });
+          this.data[index].delegates[index2].blockId = res.blockId;
           this.data[index].delegates[index2].blockHeight = res.blockHeight;
+          this.data[index].delegates[
+            index2
+          ].blockDate = this.$utils.timestampToTime(res.blockDate);
           this.data[index].delegates[index2].blockTimestamp =
             res.blockTimestamp;
         }

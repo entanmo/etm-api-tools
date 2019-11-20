@@ -46,6 +46,12 @@ export default new Router({
                   component: () =>
                     import("@/menus/workspace/monitor/configure"),
                   icon: "none"
+                },
+                {
+                  path: "/workspace/monitor/notice",
+                  name: "通知管理",
+                  component: () => import("@/menus/workspace/monitor/notice"),
+                  icon: "none"
                 }
               ]
             },
