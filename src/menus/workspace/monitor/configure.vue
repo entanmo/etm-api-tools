@@ -234,7 +234,7 @@ export default {
         });
         if (index >= 0 && this.data[index].delegates.length > 0) {
           let index2 = this.data[index].delegates.findIndex(item2 => {
-            return item2.address === res.address;
+            return item2.publicKey === res.publicKey;
           });
           this.data[index].delegates[index2].blockId = res.blockId;
           this.data[index].delegates[index2].blockHeight = res.blockHeight;

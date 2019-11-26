@@ -26,6 +26,7 @@
             <a-collapse-panel>
               <template slot="header">
                 <span>{{item.name||item.ip}}</span>
+
                 <a-badge
                   class="status"
                   status="success"
@@ -39,6 +40,8 @@
                   text="更新中"
                 />
                 <a-badge class="status" status="error" v-else text="异常" />
+
+                <span class="height">{{item.lastestHeight}}</span>
               </template>
 
               <div>
@@ -97,6 +100,7 @@
             <a-collapse-panel>
               <template slot="header">
                 <span>{{item.name||item.ip}}</span>
+
                 <a-badge
                   class="status"
                   status="success"
@@ -110,6 +114,8 @@
                   text="更新中"
                 />
                 <a-badge class="status" status="error" v-else text="异常" />
+
+                <span class="height">{{item.lastestHeight}}</span>
               </template>
 
               <div>
@@ -153,9 +159,12 @@
             <a-collapse-panel>
               <template slot="header">
                 <span>{{item.name||item.ip}}</span>
+
                 <a-badge class="status" status="success" v-if="item.status===0" text="正常" />
                 <a-badge class="status" status="warning" v-else-if="item.status===1" text="更新中" />
                 <a-badge class="status" status="error" v-else text="异常" />
+
+                <span class="height">{{item.lastestHeight}}</span>
               </template>
 
               <div>
@@ -234,7 +243,7 @@ export default {
       if (res.lastestHeight > this.height) {
         this.height = res.lastestHeight;
       }
-      
+
       if (res.type === 0) {
         if (this.miner.length > 0) {
           let index = this.miner.findIndex(item => {
@@ -322,7 +331,7 @@ export default {
           });
           if (index >= 0 && this.miner[index].delegates.length > 0) {
             let index2 = this.miner[index].delegates.findIndex(item2 => {
-              return item2.address === res.address;
+              return item2.publicKey === res.publicKey;
             });
             this.miner[index].delegates[index2].blockId = res.blockId;
             this.miner[index].delegates[index2].blockHeight = res.blockHeight;
@@ -338,7 +347,7 @@ export default {
           });
           if (index >= 0 && this.seed[index].delegates.length > 0) {
             let index2 = this.seed[index].delegates.findIndex(item2 => {
-              return item2.address === res.address;
+              return item2.publicKey === res.publicKey;
             });
             this.seed[index].delegates[index2].blockId = res.blockId;
             this.seed[index].delegates[index2].blockHeight = res.blockHeight;
@@ -354,7 +363,7 @@ export default {
           });
           if (index >= 0 && this.wallet[index].delegates.length > 0) {
             let index2 = this.wallet[index].delegates.findIndex(item2 => {
-              return item2.address === res.address;
+              return item2.publicKey === res.publicKey;
             });
             this.wallet[index].delegates[index2].blockId = res.blockId;
             this.wallet[index].delegates[index2].blockHeight = res.blockHeight;
@@ -461,6 +470,11 @@ export default {
     }
     .edit {
       text-align: center;
+    }
+
+    .height {
+      padding-right: 50px;
+      float: right;
     }
     .status {
       padding-right: 10px;

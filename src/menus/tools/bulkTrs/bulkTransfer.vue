@@ -18,7 +18,7 @@
                     v-model="address" />
       </div>
       <div class="tr-transfer-amount">
-        <div class="amount-title">金额列表：</div>
+        <div class="amount-title">金额列表(ETM)：</div>
         <a-textarea class="amount-input"
                     placeholder="请输入转账金额 【相同金额只输入一个值，不同金额保持与接受者地址数量一致】"
                     :rows="10"

@@ -10,7 +10,11 @@ let Utils = {
 
   processArray(str) {
     str = str.replace("，", ",");
+    str = str.replace(/[\r\n]\s{2,}/g, "");
+    // eslint-disable-next-line no-useless-escape
+    str = str.replace(/[\"\']/g, "");
     let arr = str.split(",");
+    // console.log(arr);
     return arr;
   },
 

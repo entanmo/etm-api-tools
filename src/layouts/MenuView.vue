@@ -24,7 +24,7 @@
             <router-view v-else />
           </transition>
 
-          <WrapperBottom v-if="page.fullPath.indexOf('api')>0" />
+          <WrapperBottom v-if="page.fullPath.indexOf('api')>0 || page.fullPath.indexOf('tools')>0" />
         </div>
       </a-tab-pane>
     </a-tabs>
@@ -187,7 +187,7 @@ export default {
 <style lang="less" scoped>
 .page-content {
   margin-top: 10px;
-  max-height: calc(100vh - 200px);
+  max-height: calc(100vh - 190px);
   overflow-y: scroll;
 }
 </style>
