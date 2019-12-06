@@ -3,22 +3,14 @@
     <div class="head-area">
       <a-card :bordered="false">
         <a-row>
-          <a-col :sm="8"
-                 :xs="24">
-            <headinfo title="最新区块高度"
-                      :content="height"
-                      :bordered="true" />
+          <a-col :sm="8" :xs="24">
+            <headinfo title="最新区块高度" :content="height" :bordered="true" />
           </a-col>
-          <a-col :sm="8"
-                 :xs="24">
-            <headinfo title="平均出块时间"
-                      :content="avgTime"
-                      :bordered="true" />
+          <a-col :sm="8" :xs="24">
+            <headinfo title="平均出块时间" :content="avgTime" :bordered="true" />
           </a-col>
-          <a-col :sm="8"
-                 :xs="24">
-            <headinfo title="最新块交易量"
-                      :content="trsNumber" />
+          <a-col :sm="8" :xs="24">
+            <headinfo title="最新块交易量" :content="trsNumber" />
           </a-col>
         </a-row>
       </a-card>
@@ -83,7 +75,8 @@ export default {
             color2: "#52c41a"
           }
         ]
-      }
+      },
+      isInGetting: false
     };
   },
   components: {
@@ -91,16 +84,19 @@ export default {
     viserbar
   },
   sockets: {
-    "height/update": function(res) {
-      if (res.lastestHeight > this.height) {
-        this.getHeight();
+    "height/update": async function(res) {
+      // console.log(res)
+      if (res.lastestHeight > this.height && !this.isInGetting) {
+        this.isInGetting = true;
+        await this.getHeight();
+        this.isInGetting = false;
       }
     }
   },
   methods: {
-    getHeight() {
+    async getHeight() {
       let server = new Server();
-      server
+      await server
         .get("api/blocks/getHeight", {})
         .then(res => {
           this.height = res.height;
@@ -118,19 +114,19 @@ export default {
         })
         .catch(() => {});
     },
-    calcAvgTime(range, cb) {
+    async calcAvgTime(range, cb) {
       let height1 = this.height;
       let height2 = height1 - range;
       let block1, block2;
 
       let server = new Server();
-      server
+      await server
         .get("api/blocks/get", { height: height1 })
-        .then(res => {
+        .then(async res => {
           block1 = res.block;
           this.trsNumber = block1.numberOfTransactions;
 
-          server
+          await server
             .get("api/blocks/get", { height: height2 })
             .then(res => {
               block2 = res.block;
@@ -145,9 +141,9 @@ export default {
         })
         .catch(() => {});
     },
-    changeAvgData() {
+    async changeAvgData() {
       let server = new Server();
-      server
+      await server
         .get("api/blocks", { limit: BAR_LEN + 1, orderBy: "height" })
         .then(res => {
           let blocks = res.blocks.reverse();
