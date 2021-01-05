@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.2.4",
-    "axios": "^0.18.0",
+    "axios": "^0.21.1",
     "deepcopy": "^2.0.0",
     "etm-js-lib": "git+https://github.com/entanmo/etm-js-lib.git",
     "viser-vue": "^2.4.4",
